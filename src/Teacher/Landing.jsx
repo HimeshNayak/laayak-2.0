@@ -6,6 +6,7 @@ import firebase from "../firebase";
 const db = firebase.firestore();
 
 class Landing extends Component {
+    isMount = false
     state = {
         user: null,
         doc: "",
@@ -15,10 +16,12 @@ class Landing extends Component {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 const docRef = db.collection("teachers").doc(user.email);
-                docRef.get().then((doc) => {                    
+                docRef.get().then((doc) => {   
+                    if(this.isMount){                 
                     this.setState({
                         doc: doc,
                     });
+                }
                 });
             }
             this.setState({ user });
@@ -26,7 +29,11 @@ class Landing extends Component {
     };
 
     componentDidMount() {
+        this.isMount = true
         this.authListener();
+    }
+    componentWillUnmount() {
+        this.isMount = false
     }
 
     render() {

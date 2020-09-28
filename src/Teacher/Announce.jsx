@@ -94,6 +94,7 @@ class AddAnnouncement extends Component {
       text: this.state.text,
       isOfficial: true
     };
+    console.log(newAnnouncement.dateAndTime);
     this.props.AddAnnouncement(newAnnouncement);
     this.setState({
       text: "",

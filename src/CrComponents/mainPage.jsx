@@ -225,6 +225,7 @@ class MainPage extends Component {
 
   AddAnnouncement = (newAnnouncement) => {
     const finAnnouncements = [...this.state.announcements, newAnnouncement];
+    // console.log(finAnnouncements);
     this.docRefUp.update({
       announcements: finAnnouncements,
     });

@@ -42,10 +42,17 @@ class MainPage extends Component {
     // only data fetch
     this.isMount = true;
     setTimeout(() => {
-      this.collRef.get().then((querySnapshot) => {
+      this.teachRef.onSnapshot((teacher) => {
+        if (this.isMount){
+        this.setState({
+          details: teacher.data().details,
+          loading: false
+        })}
+      })
+      this.collRef.onSnapshot((querySnapshot) => {        
         querySnapshot.docs.forEach((doc) => {
           doc.data().subjects.forEach(subject => {
-            if (subject.subjectCode === this.state.details.subjectCode) {
+            if (subject.subjectCode == this.state.details.subjectCode) {
               if (this.isMount){
               this.setState({
                 classesTeaching: this.state.classesTeaching.concat(Object.assign(doc.data().details, { classId: doc.id }))
@@ -69,14 +76,7 @@ class MainPage extends Component {
             }
           })
         })
-      });
-      this.teachRef.onSnapshot((teacher) => {
-        if (this.isMount){
-        this.setState({
-          details: teacher.data().details,
-          loading: false
-        })}
-      })
+      });      
     }, 2000)
   }
 
@@ -151,11 +151,7 @@ class MainPage extends Component {
     }
     this.collRef.doc(newLecture.classId).collection("lectures").doc("lecturesToday").update({
       lectures: firebase.firestore.FieldValue.arrayUnion(updatedLecture)
-    })
-    // this.setState({
-    //   classTeaching: [],
-    //   lecturesToday: []
-    // })
+    })    
   };
   // All update/edit functions
   handleDetailsEdit = () => { };
@@ -174,11 +170,7 @@ class MainPage extends Component {
     }
     this.collRef.doc(lecture.classId).collection("lectures").doc("lecturesToday").update({
       lectures: firebase.firestore.FieldValue.arrayRemove(delLec)
-    })
-    // this.setState({
-    //   classTeaching: [],
-    //   lecturesToday: []
-    // })
+    })    
   };
 }
 

@@ -46,7 +46,7 @@ class Announcement extends Component {
     let dateTime = dateAndTime.toDate();
     const date = dateTime.getDate();
 
-    const month = months[dateTime.getMonth() - 1];
+    const month = months[dateTime.getMonth()];
     const year = dateTime.getFullYear();
     let hour = dateTime.getHours();
     let ampm = "am";
@@ -82,7 +82,7 @@ class Announcement extends Component {
     let dateTime = dateAndTime.toDate();
     const date = dateTime.getDate();
 
-    const month = months[dateTime.getMonth() - 1];
+    const month = months[dateTime.getMonth()];
     const year = dateTime.getFullYear();
     let hour = dateTime.getHours();
     let ampm = "am";
@@ -139,7 +139,7 @@ class Announcement extends Component {
     let dateTime = dateAndTime.toDate();
     const date = dateTime.getDate();
 
-    const month = months[dateTime.getMonth() - 1];
+    const month = months[dateTime.getMonth()];
     const year = dateTime.getFullYear();
     let hour = dateTime.getHours();
     let ampm = "am";

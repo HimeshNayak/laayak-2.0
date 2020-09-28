@@ -5,6 +5,7 @@ class AddLink extends Component {
     show: false,
     link: "",
     text: "",
+    isOfficial: false
   };
 
   // toggle show state

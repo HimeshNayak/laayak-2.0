@@ -10,43 +10,52 @@ let db = firebase.firestore();
 
 
 class classDetails extends Component {
-    state = {
-        details: [],
-        announcements: [],
-        user: firebase.auth().currentUser,
-        classId: this.props.location.state.classId
-    };
+  isMount = false
+  state = {
+    details: [],
+    announcements: [],
+    user: firebase.auth().currentUser,
+    classId: this.props.location.state.classId
+  };
 
-    collRef = db.collection("classes");
-    docRef = this.collRef.doc(this.state.classId);    ;
-    collRefUp = this.docRef.collection("updates");
-    docRefUp = this.collRefUp.doc("announcements");
+  collRef = db.collection("classes");
+  docRef = this.collRef.doc(this.state.classId);;
+  collRefUp = this.docRef.collection("updates");
+  docRefUp = this.collRefUp.doc("announcements");
 
-    componentDidMount() {
-        this.docRef.onSnapshot((doc) => {
-          if (doc.data()) {
-            this.setState({              
-              details: doc.data().details,
-            });
-          }
-        });        
-        this.docRefUp.onSnapshot((doc) => {
-          if (doc.data()) {
-              doc.data().announcements.map((announcement) => {
-                if(announcement.isOfficial){
-                    this.setState({
-                      announcements: this.state.announcements.concat(announcement)
-                    })
-                }
-              });
-            this.sortAnnouncements();
+  componentDidMount() {
+    this.isMount = true
+    this.docRef.onSnapshot((doc) => {
+      if (doc.data()) {
+        if (this.isMount) {
+          this.setState({
+            details: doc.data().details,
+          });
+        }
+      }
+    });
+    this.docRefUp.onSnapshot((doc) => {
+      if (doc.data()) {
+        doc.data().announcements.map((announcement) => {
+          if (announcement.isOfficial) {
+            if (this.isMount) {
+              this.setState({
+                announcements: this.state.announcements.concat(announcement)
+              })
+            }
           }
         });
+        this.sortAnnouncements();
       }
-    render() {
-        return ( 
-            <div className="container-fluid">
-        <div className="code-head-btn">          
+    });
+  }
+  componentWillMount() {
+    this.isMount = false;
+  }
+  render() {
+    return (
+      <div className="container-fluid">
+        <div className="code-head-btn">
 
           <h1 className="mainPageHeading mx-auto" style={{ marginTop: "-3vh" }}>
             Class Details
@@ -92,43 +101,43 @@ class classDetails extends Component {
           {this.state.announcements.map((announcement) => (
             <div key={announcement.dateAndTime}>
               <Announcement
-                announcement={announcement}                
+                announcement={announcement}
                 onDelete={this.deleteAnnouncement}
               />
             </div>
           ))}
-        </div>        
+        </div>
       </div>
-           
-        );
-    }
-    sortAnnouncements = () => {
-        let temp = this.state.announcements;
-        for (let i = 0; i < temp.length; i++) {
-          for (let j = i + 1; j < temp.length; j++) {
-            if (temp[i].dateAndTime < temp[j].dateAndTime) {
-              let x = temp[i];
-              temp[i] = temp[j];
-              temp[j] = x;
-            }
-          }
+
+    );
+  }
+  sortAnnouncements = () => {
+    let temp = this.state.announcements;
+    for (let i = 0; i < temp.length; i++) {
+      for (let j = i + 1; j < temp.length; j++) {
+        if (temp[i].dateAndTime < temp[j].dateAndTime) {
+          let x = temp[i];
+          temp[i] = temp[j];
+          temp[j] = x;
         }
-        this.setState({
-          announcements: temp,
-        });
-      };
-      AddAnnouncement = (newAnnouncement) => {
-        const finAnnouncements = [...this.state.announcements, newAnnouncement];
-        this.docRefUp.update({
-          announcements: finAnnouncements,
-        });
-      };
-      deleteAnnouncement = (dateAndTime) => {
-        this.docRefUp.update({
-          announcements: this.state.announcements.filter(
-            (a) => a.dateAndTime != dateAndTime
-          ),
-        });
-      };      
+      }
     }
+    this.setState({
+      announcements: temp,
+    });
+  };
+  AddAnnouncement = (newAnnouncement) => {
+    const finAnnouncements = [...this.state.announcements, newAnnouncement];
+    this.docRefUp.update({
+      announcements: firebase.firestore.FieldValue.arrayUnion(newAnnouncement),
+    });
+  };
+  deleteAnnouncement = (dateAndTime) => {
+    this.docRefUp.update({
+      announcements: this.state.announcements.filter(
+        (a) => a.dateAndTime != dateAndTime
+      ),
+    });
+  };
+}
 export default classDetails;

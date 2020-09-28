@@ -7,25 +7,30 @@ const db = firebase.firestore(),
 let docRef = db.collection("classes").doc();
 
 class AfterSignup extends Component {
+    isMount = false
     state = {
         details: {
             name: "",
             college: "",
             subjectName: "",
             subjectCode: ""
-        },        
+        },
         redirect: false,
     };
 
     componentDidMount() {
+        this.isMount = true
         auth.onAuthStateChanged((user) => {
-            if (user) {
-                this.setState({
-                    user,
-                    forgery: false,
-                });
-            } else {
-                this.setState({ forgery: true });
+            if (this.isMount) {
+                if (user) {
+                    this.setState({
+                        user,
+                        forgery: false,
+                    });
+
+                } else {
+                    this.setState({ forgery: true });
+                }
             }
         });
     }
@@ -40,10 +45,16 @@ class AfterSignup extends Component {
             val = e.target.value,
             details = { ...this.state.details };
         details[nam] = val;
-        this.setState({
-            details,
-        });
+        if (this.isMount) {
+            this.setState({
+                details,
+            });
+        }
     };
+
+    componentWillMount() {
+        this.isMount = false;
+      }
 
     addDoc = () => {
         console.log("doc add");

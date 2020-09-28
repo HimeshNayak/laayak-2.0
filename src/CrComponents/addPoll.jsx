@@ -6,6 +6,7 @@ class AddPoll extends Component {
     yesOption: "",
     noOption: "",
     text: "",
+    isOfficial: false
   };
 
   // toggle show state
@@ -132,6 +133,7 @@ class AddPoll extends Component {
       noCount: 0,
       isOfficial: this.state.isOfficial
     };
+    console.log(newPoll);
     this.props.addPoll(newPoll);
     this.setState({
       text: "",
