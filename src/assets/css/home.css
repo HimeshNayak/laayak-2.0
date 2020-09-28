@@ -1,0 +1,58 @@
+@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Acme&display=swap");
+body {
+  background: #800080; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to bottom,
+    #ffc0cb,
+    #800080
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to bottom,
+    #ffc0cb,
+    #800080
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  text-align: center;
+  font-family: "Acme", sans-serif;
+  font-size: 16px;
+  margin-top: 10vh;
+  margin-bottom: 10vh;
+  height: 100%;
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+.title {
+  font-family: "Lobster", cursive;
+  font-size: 6vw;
+}
+
+@media (max-width: 500px) {
+  .title {
+    font-size: 20vw;
+  }
+}
+
+.titleheader {
+  margin-top: -10vh;
+}
+
+.home-page {
+  margin-top: 20vh;
+}
+
+.about-content {
+  margin: 0 auto;
+  width: 80%;
+  font-size: 20px;
+}
+
+.about-title {
+  color: purple;
+  text-decoration: underline;
+}
+
+.dev-email {
+  color: rgba(29, 29, 29, 0.842);
+}

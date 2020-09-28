@@ -1,0 +1,156 @@
+/* Headings */
+.mainPageHeading {
+  font-size: 72px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-decoration: underline;
+}
+
+.subHeading {
+  font-size: 56px;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  color: rgb(39, 39, 39);
+}
+
+/* for hover effects on cards */
+.shadow-hover {
+  transition-duration: 0.2s;
+  margin: 5px auto;
+  border-radius: 10px;
+}
+
+.shadow-hover:hover {
+  box-shadow: 2px 2px 10px 10px rgba(255, 31, 255, 0.226);
+  background-color: white;
+  transform: scale(1.03);
+  cursor: default;
+}
+
+.my-card-details {
+  background-color: rgba(255, 255, 255, 0.651);
+  text-align: left;
+}
+
+.announcement-card,
+.link-card,
+.poll-card {
+  transition-duration: 0.2s;
+  opacity: 0.9;
+  border-radius: 20px;
+  width: 80vw;
+}
+
+.announcement-card {
+  background-color: wheat;
+}
+
+.poll-card {
+  background-color: rgb(233, 233, 233);
+}
+
+.link-card {
+  background-color: lightgreen;
+}
+
+.announcement-card:hover,
+.link-card:hover,
+.poll-card:hover {
+  opacity: 1;
+  transform: scale(1.02);
+  box-shadow: 2px 2px 5px 5px rgba(179, 255, 179, 0.295);
+  cursor: default;
+}
+
+.link-card {
+  overflow: hidden;
+}
+
+.ann-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+  object-fit: contain;
+}
+
+.my-flex-container {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.lectures-row {
+  display: flex;
+  overflow-x: scroll;
+  align-items: center;
+  overflow-y: hidden;
+  justify-content: flex-start;
+  align-self: stretch;
+}
+
+.lec-card {
+  height: 100%;
+  margin-left: 0;
+  padding: 20px;
+  overflow-wrap: break-word;
+}
+
+.lectures-row::-webkit-scrollbar {
+  display: none;
+}
+
+.subject-card {
+  height: 100%;
+  padding: 20px;
+}
+
+.subject-card:hover {
+  transform: scale(1.03);
+}
+
+.btn-lec {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  flex-grow: stretch;
+  justify-content: space-around;
+}
+
+.join-copy {
+  width: 45%;
+}
+
+p {
+  letter-spacing: 0.8px;
+}
+
+.key-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.code-head-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  flex-direction: row;
+}
+
+@media (max-width: 350px) {
+  .key-container {
+    flex-direction: column;
+  }
+  .code-head-btn {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.add-lec-subject {
+  cursor: pointer;
+}
+
