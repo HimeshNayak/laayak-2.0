@@ -76,7 +76,6 @@ class AddAnnouncement extends Component {
           id="announcementIsOfficial"
           name="isOfficial"
           onChange={(e) => this.setState({isOfficial: e.target.checked})}
-          name="text" 
           />
           <label className="m-2 mb-0 custom-control-label" style={{ fontSize: "18px" }} htmlFor="announcementIsOfficial">
             Official

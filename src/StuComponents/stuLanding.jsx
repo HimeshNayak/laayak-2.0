@@ -12,7 +12,7 @@ class StuLanding extends Component {
 
   componentDidMount() {    
     var code;
-    if(code = this.props.match.params.code){
+    if((code = this.props.match.params.code)){
       this.setState({
       studentCode: code,      
       rightCode: true,

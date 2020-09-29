@@ -11,9 +11,11 @@ class AddSubject extends Component {
     show: false,
     subject: "",
     code: "",
-    teacherID: "",
+    teacherId: "",
     teacherName: "",
-    disabled: false
+    subjects: [],
+    ndisabled: false,
+    sdisabled: false
   };
 
   // toggle show state
@@ -71,7 +73,7 @@ class AddSubject extends Component {
               className="form-control"
               id="teacher-id"
               name="teacherId"              
-              value={this.state.teacher}
+              value={this.state.teacherId}
               onChange={this.fetchTeacher}
             />
           </div>
@@ -84,34 +86,33 @@ class AddSubject extends Component {
               className="form-control"
               id="teacher-name"
               name="teacherName"
-              disabled={this.state.disabled}
+              disabled={this.state.ndisabled}
               value={this.state.teacherName}
               onChange={this.handleChange}
             />
           </div>
         </div>
         <div className="form-group row">
+        <label className="col-sm-2 col-form-label">Subject Code:</label>
+          <div className="col-sm-3">
+            <input
+              type="text"
+              className="form-control"
+              id="code"
+              name="code"
+              value={this.state.code}
+              onChange={this.fetchSubject}
+            />
+          </div>
         <label className="col-sm-2 col-form-label">Subject Name:</label>
           <div className="col-sm-4">
             <input
               type="text"
               className="form-control"
-              id="subject-name"
+              id="name"
               name="subject"
-              disabled={this.state.disabled}
+              disabled={this.state.sdisabled}
               value={this.state.subject}
-              onChange={this.handleChange}
-            />
-          </div>
-          <label className="col-sm-2 col-form-label">Subject Code:</label>
-          <div className="col-sm-3">
-            <input
-              type="text"
-              className="form-control"
-              id="subject-code"
-              name="code"
-              disabled={this.state.disabled}
-              value={this.state.code}
               onChange={this.handleChange}
             />
           </div>          
@@ -127,16 +128,33 @@ class AddSubject extends Component {
     this.setState({ [nam]: val });
   };
 
+  fetchSubject = (event) => {    
+    this.handleChange(event)
+    let code = event.target.value;
+    if(code){
+    const foundSubject = this.state.subjects.find((sub) => {
+      return sub.subjectCode === code
+    })
+    if(foundSubject){
+      this.setState({
+        subject: foundSubject.subjectName,
+        sdisabled: true
+      })
+    } else {
+      this.setState({ subject: "", sdisabled: false })
+    }
+  }
+  }
   fetchTeacher = (event) => {
+    this.handleChange(event)
     let id = event.target.value;
     if(id){
-    const teacherRef = db.collection("teachers").doc(id);
-    teacherRef.get().then((doc) => {    
+    db.collection("teachers").doc(id).onSnapshot((doc) => {    
       if(doc.exists){
-        this.setState({teacherName: doc.data().details["name"], subject: doc.data().details["subjectName"], code: doc.data().details["subjectCode"], disabled: true});
-      } else{
-        this.setState({disabled: false});
-      }
+        this.setState({teacherName: doc.data().details["name"], subjects: doc.data().subjects, ndisabled: true});
+      } else {
+        this.setState({ teacherName: "", subjects: [], ndisabled: false })
+      }      
     })
   }
   }
@@ -149,6 +167,13 @@ class AddSubject extends Component {
       teacher: this.state.teacherName,
     };
     this.setState({ show: false });
+    if(this.state.subjects[0] && !this.state.sdisabled){
+      const sub = {
+        subjectCode: this.state.code,
+        subjectName: this.state.subject,
+      }
+      this.props.addTeachSubject(this.state.teacherId, sub)
+    }
     this.props.addSubject(subj);
     this.setState({
       subject: "",

@@ -13,7 +13,7 @@ class Details extends Component {
     );
   }
   getDetails = () => {
-    const { name, college, subjectName, subjectCode } = this.props.details;
+    const { name, college } = this.props.details;
     return (
       <div>
         <p>
@@ -21,12 +21,6 @@ class Details extends Component {
         </p>
         <p>
           College: <strong>{college}</strong>
-        </p>
-        <p>
-          Subject: <strong>{subjectName}</strong>
-        </p>
-        <p>
-          Subject Code: <strong>{subjectCode}</strong>
         </p>        
       </div>
     );

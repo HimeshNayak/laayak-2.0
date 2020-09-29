@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-class Subject extends Component {
+class Class extends Component {
   state = {};
   render() {
     return (
@@ -13,13 +13,15 @@ class Subject extends Component {
           >
             <div className="card-body p-0">
               <p className="card-text">
-                Course: <strong>{this.props.details.course}</strong>
+                Course: <strong>{this.props.details.course}</strong>                
                 <br />
                 Branch: <strong>{this.props.details.branch}</strong>
                 <br />
                 Semester: <strong>{this.props.details.sem}</strong>
                 <br />
                 CR : <strong>{this.props.details.crName}</strong>
+                <br />
+                Subject: <strong>{this.props.details.subject}</strong>
               </p>
             </div>
             <Link
@@ -38,4 +40,4 @@ class Subject extends Component {
   }
 }
 
-export default Subject;
+export default Class;

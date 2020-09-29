@@ -38,6 +38,8 @@ class Announcement extends Component {
         return this.displayPoll();
       case "link":
         return this.displayLink();
+      default :
+      return ;
     }
   };
 
@@ -226,6 +228,8 @@ class Announcement extends Component {
       case "link":
         cls = cls + "link-card";
         break;
+      default:
+        return ;
     }
     return cls;
   };
@@ -236,7 +240,7 @@ class Announcement extends Component {
         className="btn btn-danger btn-sm m-1"
         onClick={() => this.props.onDelete(this.props.announcement.dateAndTime)}
       >
-        Delete❌
+        Delete
       </button>
     );
   };

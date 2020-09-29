@@ -75,6 +75,7 @@ class Lecture extends Component {
             href={link}
             className="btn btn-primary mt-0 join-copy"
             target="_blank"
+            rel="noopener noreferrer"
           >
             Join now
           </a>

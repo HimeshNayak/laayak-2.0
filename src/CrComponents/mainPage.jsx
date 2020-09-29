@@ -127,7 +127,7 @@ class MainPage extends Component {
         {/* Announcement/polls/links */}
         <div id="announcements">
           <div className="d-inline container-fluid">
-            <h2 className="subHeading">Mitron! Announcement Suno 📢</h2>
+            <h2 className="subHeading">Mitron! Announcement Suno <span role="img" aria-label="announcement">📢</span></h2>
             <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
           </div>
 
@@ -169,7 +169,10 @@ class MainPage extends Component {
         </div>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
         {/* button to add a new subject */}
-        <AddSubject addSubject={this.addSubject} />
+        <AddSubject 
+        addSubject={this.addSubject}
+        addTeachSubject={this.addTeachSubject}
+        />
         <div className="my-flex-container">
           {this.state.subjects.map((subject) => (
             <Subject
@@ -215,17 +218,21 @@ class MainPage extends Component {
     });
   };
 
+  addTeachSubject = (id, newSubject) => {    
+    db.collection("teachers").doc(id).update({
+      subjects: firebase.firestore.FieldValue.arrayUnion(Object.assign(newSubject, {course: this.state.details.course}))
+    })
+  }
+
   addLecture = (newLecture) => {
     const finLectures = [...this.state.lecturesToday, newLecture];
-    console.log(finLectures);
     this.docRefLec.update({
       lectures: finLectures,
     });
   };
 
   AddAnnouncement = (newAnnouncement) => {
-    const finAnnouncements = [...this.state.announcements, newAnnouncement];
-    // console.log(finAnnouncements);
+    const finAnnouncements = [...this.state.announcements, newAnnouncement];    
     this.docRefUp.update({
       announcements: finAnnouncements,
     });
@@ -238,21 +245,21 @@ class MainPage extends Component {
   deleteAnnouncement = (dateAndTime) => {
     this.docRefUp.update({
       announcements: this.state.announcements.filter(
-        (a) => a.dateAndTime != dateAndTime
+        (a) => a.dateAndTime !== dateAndTime
       ),
     });
   };
 
   deleteSubject = (subjectCode) => {
     this.docRef.update({
-      subjects: this.state.subjects.filter((s) => s.subjectCode != subjectCode),
+      subjects: this.state.subjects.filter((s) => s.subjectCode !== subjectCode),
     });
   };
 
   deleteLecture = (link, startTime) => {
     this.docRefLec.update({
       lectures: this.state.lecturesToday.filter(
-        (l) => l.link != link && l.startTime != startTime
+        (l) => l.link !== link && l.startTime !== startTime
       ),
     });
   };

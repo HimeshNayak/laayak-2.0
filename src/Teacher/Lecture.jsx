@@ -17,7 +17,7 @@ class Lecture extends Component {
     const {
       branch,
       sem,
-      cr,
+      subject,
       startTime,
       endTime,
       link,
@@ -51,10 +51,7 @@ class Lecture extends Component {
         </p>
         <p>
           Semester: <strong>{sem}</strong>
-        </p>
-        <p>
-          CR: <strong>{cr}</strong>
-        </p>
+        </p>        
         <p>
           Timings:{" "}
           <strong>
@@ -63,16 +60,20 @@ class Lecture extends Component {
           </strong>
         </p>
         <p>
+          Subject: <strong>{subject}</strong>
+        </p>
+        <p>
           Group: <strong>{group ? group : "Everyone"}</strong>
         </p>
         <p>
-          Description: <strong>{text}</strong>
+        Description: <strong>{text ? text : "no info provided"}</strong>
         </p>
         <div className="btn-lec">
           <a
             href={link}
             className="btn btn-primary mt-0 join-copy"
             target="_blank"
+            rel="noopener noreferrer"
           >
             Join now
           </a>
@@ -89,7 +90,7 @@ class Lecture extends Component {
           style={{ width: "100%" }}
           onClick={() => this.props.onDelete(this.props.lecture)}
         >
-          Delete ❌
+          Delete
         </button>
       </div>
     );

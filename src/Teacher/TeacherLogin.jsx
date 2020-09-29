@@ -40,7 +40,7 @@ class TeacherLogin extends Component {
   render() {
     return (
       <div style={{marginTop: "30vh"}}>
-        <h1>Please Login 🙏🏻</h1>
+        <h1>Please Login <span role="img" aria-label="namaste">🙏🏻</span></h1>
         {this.form()}
       </div>
     );

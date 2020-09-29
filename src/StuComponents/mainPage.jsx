@@ -88,7 +88,7 @@ class MainPage extends Component {
           {/* Announcement/polls/links */}
           <div id="announcements">
             <div className="d-inline container-fluid">
-              <h2 className="subHeading">Mitron! Announcement Suno 📢</h2>
+              <h2 className="subHeading">Mitron! Announcement Suno <span role="img" aria-label="announcement">📢</span></h2>
               <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
             </div>
             <div className="key-container">

@@ -99,7 +99,6 @@ class AddLecture extends Component {
                   type="datetime-local"
                   name="startTime"
                   min={Date.now()}
-                  name="startTime"
                   id="startTime"
                   onChange={this.handleChange}
                   required
@@ -112,7 +111,6 @@ class AddLecture extends Component {
                   type="datetime-local"
                   name="endTime"
                   min={Date.now()}
-                  name="endTime"
                   id="endTime"
                   onChange={this.handleChange}
                   required
@@ -123,7 +121,6 @@ class AddLecture extends Component {
                 <input
                   className="form-control"
                   type="text"
-                  name="group"
                   name="group"
                   id="group"
                   onChange={this.handleChange}

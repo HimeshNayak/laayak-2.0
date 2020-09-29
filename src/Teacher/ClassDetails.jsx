@@ -36,7 +36,7 @@ class classDetails extends Component {
     });
     this.docRefUp.onSnapshot((doc) => {
       if (doc.data()) {
-        doc.data().announcements.map((announcement) => {
+        doc.data().announcements.forEach((announcement) => {
           if (announcement.isOfficial) {
             if (this.isMount) {
               this.setState({
@@ -72,7 +72,7 @@ class classDetails extends Component {
         {/* Announcement/polls/links */}
         <div id="announcements">
           <div className="d-inline container-fluid">
-            <h2 className="subHeading">Manage Announcements 📢</h2>
+            <h2 className="subHeading">Manage Announcements <span role="img" aria-label="announcement">📢</span></h2>
             <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
           </div>
 
@@ -126,8 +126,7 @@ class classDetails extends Component {
       announcements: temp,
     });
   };
-  AddAnnouncement = (newAnnouncement) => {
-    const finAnnouncements = [...this.state.announcements, newAnnouncement];
+  AddAnnouncement = (newAnnouncement) => {    
     this.docRefUp.update({
       announcements: firebase.firestore.FieldValue.arrayUnion(newAnnouncement),
     });
@@ -135,7 +134,7 @@ class classDetails extends Component {
   deleteAnnouncement = (dateAndTime) => {
     this.docRefUp.update({
       announcements: this.state.announcements.filter(
-        (a) => a.dateAndTime != dateAndTime
+        (a) => a.dateAndTime !== dateAndTime
       ),
     });
   };

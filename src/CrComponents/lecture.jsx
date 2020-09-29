@@ -76,6 +76,7 @@ class Lecture extends Component {
             href={link}
             className="btn btn-primary mt-0 join-copy"
             target="_blank"
+            rel="noopener noreferrer"
           >
             Join now
           </a>
@@ -92,7 +93,7 @@ class Lecture extends Component {
           style={{ width: "100%" }}
           onClick={() => this.props.onDelete(link, startTime)}
         >
-          Delete ❌
+          Delete
         </button>
       </div>
     );

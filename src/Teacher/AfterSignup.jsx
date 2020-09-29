@@ -4,7 +4,6 @@ import { Redirect } from "react-router-dom";
 const db = firebase.firestore(),
     auth = firebase.auth();
 
-let docRef = db.collection("classes").doc();
 
 class AfterSignup extends Component {
     isMount = false

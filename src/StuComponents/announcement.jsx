@@ -31,6 +31,8 @@ class Announcement extends Component {
         return this.displayPoll();
       case "link":
         return this.displayLink();
+      default:
+        return;
     }
   };
 
@@ -222,6 +224,8 @@ class Announcement extends Component {
         break;
       case "link":
         cls = cls + "link-card";
+        break;
+      default:
         break;
     }
     return cls;

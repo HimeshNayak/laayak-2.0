@@ -11,18 +11,18 @@ class Subject extends Component {
             style={{ width: "18rem" }}
           >
             <div className="card-body p-0">
-              <h5 className="card-title">{this.props.subject.subject}</h5>
+              <h5 className="card-title">{this.props.subject.subjectName}</h5>
               <p className="card-text">
-                Subject Code: <strong>{this.props.subject.subjectCode}</strong>
+                Course: <strong>{this.props.subject.course}</strong>
                 <br />
-                Teacher: <strong>{this.props.subject.teacher}</strong>
+                Subject Code: <strong>{this.props.subject.subjectCode}</strong>
               </p>
             </div>
 
             <button
               className="btn btn-sm btn-danger"
               onClick={() =>
-                this.props.onDelete(this.props.subject.subjectCode)
+                this.props.onDelete(this.props.subject)
               }
             >
               Delete

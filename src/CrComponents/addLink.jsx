@@ -96,7 +96,6 @@ class AddLink extends Component {
           id="linkIsOfficial"
           name="isOfficial"
           onChange={(e) => this.setState({isOfficial: e.target.checked})}
-          name="text" 
           />
           <label className="m-2 mb-0 custom-control-label" htmlFor="linkIsOfficial">
             Official

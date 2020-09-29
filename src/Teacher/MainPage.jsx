@@ -5,6 +5,8 @@ import Lecture from "./Lecture";
 import AddLecture from "./AddLecture";
 import Loader from "../Loader/Loader";
 import firebase from "../firebase";
+import AddSubject from "./AddSubject";
+import Subject from "./Subject";
 
 // reference to firestore
 
@@ -15,6 +17,7 @@ class MainPage extends Component {
   state = {
     classesTeaching: [],
     details: [],
+    subjects: [],
     lecturesToday: [],
     user: firebase.auth().currentUser,
     loading: true
@@ -43,40 +46,47 @@ class MainPage extends Component {
     this.isMount = true;
     setTimeout(() => {
       this.teachRef.onSnapshot((teacher) => {
-        if (this.isMount){
-        this.setState({
-          details: teacher.data().details,
-          loading: false
-        })}
+        if (this.isMount) {
+          this.setState({
+            details: teacher.data().details,
+            subjects: teacher.data().subjects,
+            loading: false
+          })
+        }
       })
-      this.collRef.onSnapshot((querySnapshot) => {        
+      this.collRef.onSnapshot((querySnapshot) => {
         querySnapshot.docs.forEach((doc) => {
           doc.data().subjects.forEach(subject => {
-            if (subject.subjectCode == this.state.details.subjectCode) {
-              if (this.isMount){
-              this.setState({
-                classesTeaching: this.state.classesTeaching.concat(Object.assign(doc.data().details, { classId: doc.id }))
-              })}
+            this.teachRef.onSnapshot((teacher) => {
+              teacher.data().subjects.forEach((teachSub) => {
+            if (subject.subjectCode === teachSub.subjectCode) {
+              if (this.isMount) {
+                this.setState({
+                  classesTeaching: this.state.classesTeaching.concat(Object.assign(doc.data().details, { classId: doc.id, subject: teachSub.subjectName }))
+                })
+              }
               this.collRef.doc(doc.id).collection("lectures").doc("lecturesToday").onSnapshot((lecDoc) => {
-                lecDoc.data().lectures.map((lecture) => {
-                  if (lecture.subjectCode == this.state.details.subjectCode) {
-                    if (this.isMount){
-                    this.setState({
-                      lecturesToday: this.state.lecturesToday.concat(Object.assign(lecture, {
-                        branch: doc.data().details.branch,
-                        sem: doc.data().details.sem,
-                        cr: doc.data().details.crName,
-                        classId: doc.id
-                      }))
-                    })
+                lecDoc.data().lectures.forEach((lecture) => {
+                  if (lecture.subjectCode === teachSub.subjectCode) {
+                    if (this.isMount) {
+                      this.setState({
+                        lecturesToday: this.state.lecturesToday.concat(Object.assign(lecture, {
+                          branch: doc.data().details.branch,
+                          sem: doc.data().details.sem,
+                          subject: teachSub.subjectName,
+                          classId: doc.id
+                        }))
+                      })
+                    }
                   }
-                }
                 })
               });
             }
           })
+          })
+          })
         })
-      });      
+      });
     }, 2000)
   }
 
@@ -107,6 +117,7 @@ class MainPage extends Component {
 
         <AddLecture
           addLecture={this.addLecture}
+          subjects={this.state.subjects}
           classesTeaching={this.state.classesTeaching}
         />
 
@@ -119,16 +130,30 @@ class MainPage extends Component {
             />
           ))}
         </div>
+        {/* YOUR SUBJECTS */}
+        <div id="subjects">
+          <h2 className="subHeading">Your Subjects:</h2>
+        </div>
+        <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
+        {/* button to add a new subject */}
+        <AddSubject addSubject={this.addSubject} />
+        <div className="my-flex-container">
+          {this.state.subjects.map((subject) => (
+            <Subject
+              subject={subject}
+              key={subject.subjectCode}
+              onDelete={this.deleteSubject}
+            />
+          ))}
+        </div>
+        {/* CLASSES YOU TEACH */}
         <h2 className="subHeading">Classes You Teach:</h2>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
-
-        {/* <AddClass addSubject={this.addSubject} /> */}
-
         <div className="my-flex-container">
           {this.state.classesTeaching.map((classTeaching) => (
             <Class
               details={classTeaching}
-              key={classTeaching.classId}
+              key={classTeaching.classId+classTeaching.subject}
               onDelete={this.deleteSubject}
             />
           ))}
@@ -140,8 +165,8 @@ class MainPage extends Component {
   // All add functions
   addLecture = (newLecture) => {
     const updatedLecture = {
-      subject: this.state.details.subjectName,
-      subjectCode: this.state.details.subjectCode,
+      subject: newLecture.subjectName,
+      subjectCode: newLecture.subjectCode,
       teacher: this.state.details.name,
       link: newLecture.link,
       startTime: newLecture.startTime,
@@ -151,8 +176,14 @@ class MainPage extends Component {
     }
     this.collRef.doc(newLecture.classId).collection("lectures").doc("lecturesToday").update({
       lectures: firebase.firestore.FieldValue.arrayUnion(updatedLecture)
-    })    
+    })
   };
+
+  addSubject = (newSubject) => {
+    this.teachRef.update({
+      subjects: firebase.firestore.FieldValue.arrayUnion(newSubject)
+    })
+  }
   // All update/edit functions
   handleDetailsEdit = () => { };
 
@@ -170,8 +201,13 @@ class MainPage extends Component {
     }
     this.collRef.doc(lecture.classId).collection("lectures").doc("lecturesToday").update({
       lectures: firebase.firestore.FieldValue.arrayRemove(delLec)
-    })    
+    })
   };
+  deleteSubject = (subject) => {
+    this.teachRef.update({
+      subjects: firebase.firestore.FieldValue.arrayRemove(subject)
+    })
+  }
 }
 
 export default MainPage;

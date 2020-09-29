@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import firebase from "../firebase";
 import { Link, Redirect } from "react-router-dom";
 
-const auth = firebase.auth(),
-  db = firebase.firestore();
+const auth = firebase.auth();
 
 class NewTeacher extends Component {
   state = {
