@@ -7,7 +7,8 @@ class AddLecture extends Component {
     link: "",
     branch: "",
     semester: "",
-    subject: [],
+    subjectName: "",
+    subjectCode: "",
     classId: "",
     text: "",
     group: "",
@@ -57,42 +58,22 @@ class AddLecture extends Component {
     return (
       <div>
         <form className="m-2" onSubmit={this.callAddLecture}>
-          <h3>Add Lecture Details:</h3>
-          <div className="col-sm-7" style={{ margin: "auto" }}>
-            <label>Subject: </label>
-            <select
-              className="add-lec-subject form-control text-center"
-              name="subject"
-              onChange={this.handleSubChange}
-              required
-            >
-              <option className="add-lec-opns" value="">
-                --Choose Subject---
-              </option>
-              {this.props.subjects.map((subject) => {
-                return (
-                  <option className="add-lec-opns" key={subject.subjectCode} value={subject.subjectCode}>
-                    {subject.subjectName}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
+          <h3>Add Lecture Details:</h3>          
           <div className="col-sm-7" style={{ margin: "auto" }}>
             <label>Branch: </label>
             <select
               className="add-lec-subject form-control text-center"
               name="branch"
-              onChange={this.handleBranchChange}
+              onChange={this.handleChange}
               required
             >
               <option className="add-lec-opns" value="">
                 --Choose Branch---
               </option>              
-              {this.props.classesTeaching.filter((classTeaching) => classTeaching.subject === this.state.subject.subjectName).map((classTeaching) => {
+              {this.props.classesTeaching.map((classTeaching) => {
                 return (
-                  <option className="add-lec-opns" key={classTeaching.classId} value={classTeaching.branch}>
-                    {classTeaching.branch}
+                  <option className="add-lec-opns" key={classTeaching.details.classId+classTeaching.details.subject} value={classTeaching.details.branch}>
+                    {classTeaching.details.branch}
                   </option>
                 );
               })}
@@ -109,10 +90,30 @@ class AddLecture extends Component {
               <option className="add-lec-opns" value="">
                 --Choose Semester---
               </option>
-              {this.props.classesTeaching.filter((classTeaching) => (classTeaching.branch === this.state.branch) && (classTeaching.subject === this.state.subject.subjectName)).map((classTeaching) => {
+              {this.props.classesTeaching.filter((classTeaching) => (classTeaching.details.branch === this.state.branch)).map((classTeaching) => {
                 return (
-                  <option className="add-lec-opns" key={classTeaching.classId} value={classTeaching.classId}>
-                    {classTeaching.sem}
+                  <option className="add-lec-opns" key={classTeaching.details.classId} value={classTeaching.details.classId}>
+                    {classTeaching.details.sem}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="col-sm-7" style={{ margin: "auto" }}>
+            <label>Subject: </label>
+            <select
+              className="add-lec-subject form-control text-center"
+              name="subject"
+              onChange={this.handleSubChange}
+              required
+            >
+              <option className="add-lec-opns" value="">
+                --Choose Subject---
+              </option>
+              {this.state.classId && this.props.classesTeaching.find((classTeaching) => (classTeaching.details.classId === this.state.classId)).subjects.map((sub) => {
+                return (
+                  <option className="add-lec-opns" key={sub.code} value={sub.code}>
+                    {sub.name}
                   </option>
                 );
               })}
@@ -188,42 +189,43 @@ class AddLecture extends Component {
     );
   };
 
-
   handleSubChange = (e) => {
-    let reqSub = [];
-    if(e.target.value){
-    reqSub = this.props.subjects.find((subject)=> subject.subjectCode === e.target.value )
-    }
+    const code = e.target.value;    
+    const subjects = this.props.classesTeaching.find((classTeaching) => classTeaching.details.classId === this.state.classId).subjects;
+    const name = subjects.find((sub) => sub.code === code).name;
     this.setState({
-      subject: reqSub
-    });    
+      subjectName: name,
+      subjectCode: code
+    })
   }
 
-  handleBranchChange = (e) => {    
-    const val = e.target.value;    
-    this.setState({
-      branch: val,      
-    });
-  };
+  // handleBranchChange = (e) => {
+  //   const val = e.target.value;    
+  //   this.setState({
+  //     branch: val,      
+  //   });
+  // };
 
   handleSemChange = (e) => {
     const val = e.target.value;
     let reqClass = {};    
     this.props.classesTeaching.forEach((classTeaching) => {
-      if(classTeaching.classId === val){
-        reqClass = classTeaching;
+      if(classTeaching.details.classId === val){
+        reqClass = classTeaching.details;
       }
     })    
     this.setState({
       semester: reqClass.sem,
       classId: reqClass.classId
-    })
+    })   
+
   }
 
   handleChange = (event) => {
     let nam = event.target.name;
     let val = event.target.value;    
-    this.setState({ [nam]: val });    
+    this.setState({ [nam]: val });
+    console.log(this.state);
   };
 
   callAddLecture = (e) => {
@@ -235,8 +237,8 @@ class AddLecture extends Component {
       endDate = new Date(end);
 
     const newLecture = {      
-      subjectName: this.state.subject.subjectName,
-      subjectCode: this.state.subject.subjectCode,
+      subjectName: this.state.subjectName,
+      subjectCode: this.state.subjectCode,
       classId: this.state.classId,
       startTime: firebase.firestore.Timestamp.fromDate(startDate),
       endTime: firebase.firestore.Timestamp.fromDate(endDate),

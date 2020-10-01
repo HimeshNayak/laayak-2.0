@@ -32,7 +32,7 @@ class Landing extends Component {
         this.isMount = true
         this.authListener();
     }
-    componentWillUnmount() {
+    componentWillMount() {
         this.isMount = false
     }
 

@@ -5,7 +5,7 @@ class Details extends Component {
   render() {
     return (
       <div
-        className="my-card-details shadow-hover p-2"
+        className="my-card-details shadow-hover p-3"
         style={{ width: "18rem" }}
       >
         {this.getDetails()}

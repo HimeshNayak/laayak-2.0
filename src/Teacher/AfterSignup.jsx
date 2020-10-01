@@ -11,11 +11,6 @@ class AfterSignup extends Component {
         details: {
             name: "",
             college: "",
-        },            
-        subject: {
-            subjectName: "",
-            subjectCode: "",
-            course: "",        
         },
         redirect: false,
     };
@@ -81,8 +76,7 @@ class AfterSignup extends Component {
                         this.setState({ redirect: true });
                     } else {
                         teachRef.set({
-                            details: this.state.details,
-                            subjects: [this.state.subject]
+                            details: this.state.details
                         })
                     }
                 });
@@ -96,7 +90,8 @@ class AfterSignup extends Component {
             return <Redirect to="/teacher" />;
         } else {
             return (
-                <div className="d-flex flex-column align-items-center">                    
+                <div className="d-flex flex-column align-items-center">     
+                    <h1>Fill in the important information please</h1>               
                     {this.getDetails()}
                 </div>
             );
@@ -106,7 +101,7 @@ class AfterSignup extends Component {
     getDetails = () => {
         return (
             <form onSubmit={this.handleSubmitDetails} className="col-sm-5 mt-4 text-left">                
-                <h1 className="mt-2">General Details:</h1>
+                {/* <h1 className="mt-2">General Details:</h1> */}
                 <div className="form-group">
                     <label>Full Name:</label>
                     <input
@@ -132,47 +127,7 @@ class AfterSignup extends Component {
                         onChange={this.handleDetailsChange}
                         required
                     />
-                </div>
-                <h1 className="mt-2">Primary Subject Info</h1>
-                <div className="form-group">
-                    <label>Subject name:</label>
-                    <input
-                        type="text"
-                        name="subjectName"
-                        id="subject-name"
-                        value={this.state.subject["subjectName"]}
-                        class="form-control"
-                        placeholder="Subject name"
-                        onChange={this.handleSubjectChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Subject Code:</label>
-                    <input
-                        type="text"
-                        name="subjectCode"
-                        id="subject-code"
-                        value={this.state.subject["subjectCode"]}
-                        class="form-control"
-                        placeholder="Subject Code"
-                        onChange={this.handleSubjectChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label>Course:</label>
-                    <input
-                        type="text"
-                        name="course"
-                        id="course"
-                        value={this.state.subject["course"]}
-                        class="form-control"
-                        placeholder="Course"
-                        onChange={this.handleSubjectChange}
-                        required
-                    />
-                </div>
+                </div>                
                 <button type="submit" className="btn btn-info">
                     Submit
         </button>

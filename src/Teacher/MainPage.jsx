@@ -5,8 +5,6 @@ import Lecture from "./Lecture";
 import AddLecture from "./AddLecture";
 import Loader from "../Loader/Loader";
 import firebase from "../firebase";
-import AddSubject from "./AddSubject";
-import Subject from "./Subject";
 
 // reference to firestore
 
@@ -17,15 +15,14 @@ class MainPage extends Component {
   state = {
     classesTeaching: [],
     details: [],
-    subjects: [],
     lecturesToday: [],
     user: firebase.auth().currentUser,
     loading: true
   };
 
-  collRef = db.collection("classes");
-  collRefTeach = db.collection("teachers");
-  teachRef = this.collRefTeach.doc(this.state.user.email);
+  claRef = db.collection("classes");
+  teachRef = db.collection("teachers").doc(this.state.user.email);
+  teachClassRef = this.teachRef.collection("classes");
 
   handleSignOut = () => {
     firebase
@@ -49,44 +46,69 @@ class MainPage extends Component {
         if (this.isMount) {
           this.setState({
             details: teacher.data().details,
-            subjects: teacher.data().subjects,
             loading: false
-          })
+          });
         }
       })
-      this.collRef.onSnapshot((querySnapshot) => {
-        querySnapshot.docs.forEach((doc) => {
-          doc.data().subjects.forEach(subject => {
-            this.teachRef.onSnapshot((teacher) => {
-              teacher.data().subjects.forEach((teachSub) => {
-            if (subject.subjectCode === teachSub.subjectCode) {
-              if (this.isMount) {
-                this.setState({
-                  classesTeaching: this.state.classesTeaching.concat(Object.assign(doc.data().details, { classId: doc.id, subject: teachSub.subjectName }))
-                })
-              }
-              this.collRef.doc(doc.id).collection("lectures").doc("lecturesToday").onSnapshot((lecDoc) => {
-                lecDoc.data().lectures.forEach((lecture) => {
-                  if (lecture.subjectCode === teachSub.subjectCode) {
-                    if (this.isMount) {
-                      this.setState({
-                        lecturesToday: this.state.lecturesToday.concat(Object.assign(lecture, {
-                          branch: doc.data().details.branch,
-                          sem: doc.data().details.sem,
-                          subject: teachSub.subjectName,
-                          classId: doc.id
-                        }))
-                      })
-                    }
-                  }
-                })
-              });
+      this.teachClassRef.onSnapshot((querySnapshot) => {
+        querySnapshot.docs.forEach((classTeaching) => {
+          let { classesTeaching } = this.state;
+          classesTeaching.push(classTeaching.data());
+          if (this.isMount) {
+            this.setState({ classesTeaching })
+          }
+          this.claRef.doc(classTeaching.id).collection("lectures").doc("lecturesToday").onSnapshot((snap) => {
+            let { lecturesToday } = this.state;
+            snap.data().lectures.forEach((l) => {
+              classTeaching.data().subjects.forEach((sub) => {
+                if (l.subjectCode === sub.code) {
+                  lecturesToday.push({ ...l, branch: classTeaching.data().details.branch, sem: classTeaching.data().details.sem, classId: classTeaching.data().details.classId });
+                }
+              })
+            })
+            if (this.isMount) {
+              this.setState({ lecturesToday })
             }
           })
-          })
-          })
         })
-      });
+      })
+      // this.collRef.onSnapshot((querySnapshot) => {
+      //   querySnapshot.docs.forEach((doc) => {
+      //     doc.data().subjects.forEach(subject => {
+      //       this.teachRef.onSnapshot((teacher) => {
+      //         teacher.data().subjects.forEach((teachSub) => {
+      //           if (subject.subjectCode === teachSub.subjectCode) {
+      //             if (this.isMount) {
+      //               let { classesTeaching } = this.state;
+      //               const temp = { ...doc.data().details, subject: teachSub.subjectName, classId: doc.id };
+      //               classesTeaching.push(temp)
+      //               // Object.assign(doc.data().details, { classId: doc.id, subject: teachSub.subjectName })
+      //               this.setState({ classesTeaching })
+      //             }
+      //             this.collRef.doc(doc.id).collection("lectures").doc("lecturesToday").onSnapshot((lecDoc) => {
+      //               lecDoc.data().lectures.forEach((lecture) => {
+      //                 if (lecture.subjectCode === teachSub.subjectCode) {
+      //                   if (this.isMount) {
+      //                     let { lecturesToday } = this.state;
+      //                     const foundLecture = {
+      //                       ...lecture,
+      //                       branch: doc.data().details.branch,
+      //                       sem: doc.data().details.sem,
+      //                       subject: teachSub.subjectName,
+      //                       classId: doc.id
+      //                     }
+      //                     lecturesToday.push(foundLecture)
+      //                     this.setState({ lecturesToday })
+      //                   }
+      //                 }
+      //               })
+      //             });
+      //           }
+      //         })
+      //       })
+      //     })
+      //   })
+      // });
     }, 2000)
   }
 
@@ -117,7 +139,6 @@ class MainPage extends Component {
 
         <AddLecture
           addLecture={this.addLecture}
-          subjects={this.state.subjects}
           classesTeaching={this.state.classesTeaching}
         />
 
@@ -130,32 +151,18 @@ class MainPage extends Component {
             />
           ))}
         </div>
-        {/* YOUR SUBJECTS */}
-        <div id="subjects">
-          <h2 className="subHeading">Your Subjects:</h2>
-        </div>
-        <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
-        {/* button to add a new subject */}
-        <AddSubject addSubject={this.addSubject} />
-        <div className="my-flex-container">
-          {this.state.subjects.map((subject) => (
-            <Subject
-              subject={subject}
-              key={subject.subjectCode}
-              onDelete={this.deleteSubject}
-            />
-          ))}
-        </div>
         {/* CLASSES YOU TEACH */}
         <h2 className="subHeading">Classes You Teach:</h2>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
         <div className="my-flex-container">
           {this.state.classesTeaching.map((classTeaching) => (
-            <Class
-              details={classTeaching}
-              key={classTeaching.classId+classTeaching.subject}
-              onDelete={this.deleteSubject}
+            classTeaching.subjects.map((subTeaching) =>(
+              <Class
+              details={classTeaching.details}
+              subject={subTeaching}
+              key={classTeaching.details.classId + subTeaching.code}
             />
+            ))            
           ))}
         </div>
       </div>
@@ -174,16 +181,13 @@ class MainPage extends Component {
       group: newLecture.group,
       text: newLecture.text
     }
-    this.collRef.doc(newLecture.classId).collection("lectures").doc("lecturesToday").update({
+    this.claRef.doc(newLecture.classId).collection("lectures").doc("lecturesToday").update({
       lectures: firebase.firestore.FieldValue.arrayUnion(updatedLecture)
     })
+    this.setState({
+      lecturesToday: []
+    });
   };
-
-  addSubject = (newSubject) => {
-    this.teachRef.update({
-      subjects: firebase.firestore.FieldValue.arrayUnion(newSubject)
-    })
-  }
   // All update/edit functions
   handleDetailsEdit = () => { };
 
@@ -199,15 +203,13 @@ class MainPage extends Component {
       endTime: lecture.endTime,
       text: lecture.text,
     }
-    this.collRef.doc(lecture.classId).collection("lectures").doc("lecturesToday").update({
+    this.claRef.doc(lecture.classId).collection("lectures").doc("lecturesToday").update({
       lectures: firebase.firestore.FieldValue.arrayRemove(delLec)
     })
+    this.setState({
+      lecturesToday: []
+    });
   };
-  deleteSubject = (subject) => {
-    this.teachRef.update({
-      subjects: firebase.firestore.FieldValue.arrayRemove(subject)
-    })
-  }
 }
 
 export default MainPage;

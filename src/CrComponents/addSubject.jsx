@@ -13,9 +13,7 @@ class AddSubject extends Component {
     code: "",
     teacherId: "",
     teacherName: "",
-    subjects: [],
-    ndisabled: false,
-    sdisabled: false
+    disabled: false    
   };
 
   // toggle show state
@@ -86,7 +84,7 @@ class AddSubject extends Component {
               className="form-control"
               id="teacher-name"
               name="teacherName"
-              disabled={this.state.ndisabled}
+              disabled={this.state.disabled}
               value={this.state.teacherName}
               onChange={this.handleChange}
             />
@@ -101,7 +99,7 @@ class AddSubject extends Component {
               id="code"
               name="code"
               value={this.state.code}
-              onChange={this.fetchSubject}
+              onChange={this.handleChange}
             />
           </div>
         <label className="col-sm-2 col-form-label">Subject Name:</label>
@@ -111,7 +109,6 @@ class AddSubject extends Component {
               className="form-control"
               id="name"
               name="subject"
-              disabled={this.state.sdisabled}
               value={this.state.subject}
               onChange={this.handleChange}
             />
@@ -128,32 +125,32 @@ class AddSubject extends Component {
     this.setState({ [nam]: val });
   };
 
-  fetchSubject = (event) => {    
-    this.handleChange(event)
-    let code = event.target.value;
-    if(code){
-    const foundSubject = this.state.subjects.find((sub) => {
-      return sub.subjectCode === code
-    })
-    if(foundSubject){
-      this.setState({
-        subject: foundSubject.subjectName,
-        sdisabled: true
-      })
-    } else {
-      this.setState({ subject: "", sdisabled: false })
-    }
-  }
-  }
+  // fetchSubject = (event) => {    
+  //   this.handleChange(event)
+  //   let code = event.target.value;
+  //   if(code){
+  //   const foundSubject = this.state.subjects.find((sub) => {
+  //     return sub.subjectCode === code
+  //   })
+  //   if(foundSubject){
+  //     this.setState({
+  //       subject: foundSubject.subjectName,
+  //       sdisabled: true
+  //     })
+  //   } else {
+  //     this.setState({ subject: "", sdisabled: false })
+  //   }
+  // }
+  // }
   fetchTeacher = (event) => {
     this.handleChange(event)
     let id = event.target.value;
     if(id){
     db.collection("teachers").doc(id).onSnapshot((doc) => {    
       if(doc.exists){
-        this.setState({teacherName: doc.data().details["name"], subjects: doc.data().subjects, ndisabled: true});
+        this.setState({teacherName: doc.data().details["name"], subjects: doc.data().subjects, disabled: true});
       } else {
-        this.setState({ teacherName: "", subjects: [], ndisabled: false })
+        this.setState({ teacherName: "", subjects: [], disabled: false })
       }      
     })
   }
@@ -165,20 +162,16 @@ class AddSubject extends Component {
       subject: this.state.subject,
       subjectCode: this.state.code,
       teacher: this.state.teacherName,
+      teacherId: this.state.teacherId
     };
-    this.setState({ show: false });
-    if(this.state.subjects[0] && !this.state.sdisabled){
-      const sub = {
-        subjectCode: this.state.code,
-        subjectName: this.state.subject,
-      }
-      this.props.addTeachSubject(this.state.teacherId, sub)
-    }
+    this.setState({ show: false });    
     this.props.addSubject(subj);
     this.setState({
       subject: "",
       code: "",
       teacherName: "",
+      teacherId: "",
+      disabled: false
     });
   };
 }

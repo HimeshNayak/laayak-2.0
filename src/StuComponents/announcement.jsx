@@ -19,7 +19,13 @@ class Announcement extends Component {
   state = {};
 
   render() {
-    return <div className={this.getClass()}>{this.displayUpdate()}</div>;
+    const {isOfficial} = this.props.announcement;
+    return (
+    <div className={this.getClass()}>
+      { isOfficial && <i className="fa fa-bookmark float-right mr-5 text-danger" style={{fontSize: "30px"}}></i> }
+      {this.displayUpdate()}
+    </div>
+    )
   }
 
   displayUpdate = () => {
@@ -37,7 +43,7 @@ class Announcement extends Component {
   };
 
   displayAnnouncement = () => {
-    const { dateAndTime, text, isOfficial } = this.props.announcement;
+    const { dateAndTime, text } = this.props.announcement;
     let dateTime = dateAndTime.toDate();
     const date = dateTime.getDate();
 
@@ -53,8 +59,7 @@ class Announcement extends Component {
       mins = dateTime.getMinutes();
     mins < 10 ? (min = "0" + String(mins)) : (min = String(mins));
     return (
-      <div>
-        { isOfficial && <i className="fa fa-bookmark float-right mr-5 text-danger" style={{fontSize: "30px"}}></i> }
+      <div>        
         <p>
           Posted On:{" "}
           <strong>
@@ -74,7 +79,7 @@ class Announcement extends Component {
   };
 
   displayLink = () => {
-    const { dateAndTime, text, link, isOfficial } = this.props.announcement;
+    const { dateAndTime, text, link } = this.props.announcement;
     let dateTime = dateAndTime.toDate();
     const date = dateTime.getDate();
 
@@ -92,7 +97,6 @@ class Announcement extends Component {
 
     return (
       <div>
-        { isOfficial && <i className="fa fa-bookmark float-right mr-5 text-danger" style={{fontSize: "30px"}}></i> }
         <p>
           Posted On:{" "}
           <strong>
@@ -131,8 +135,7 @@ class Announcement extends Component {
       yesCount,
       yesOption,
       noCount,
-      noOption,
-      isOfficial
+      noOption
     } = this.props.announcement;
     let dateTime = dateAndTime.toDate();
     const date = dateTime.getDate();
@@ -153,8 +156,7 @@ class Announcement extends Component {
     let noVotePercent = (noCount * 100) / (noCount + yesCount);
     if (Number.isNaN(noVotePercent)) noVotePercent = 0;
     return (
-      <div>
-        { isOfficial && <i className="fa fa-bookmark float-right mr-5 text-danger" style={{fontSize: "30px"}}></i> }
+      <div>      
         <p>
           Posted On:{" "}
           <strong>
@@ -214,7 +216,7 @@ class Announcement extends Component {
 
   getClass = () => {
     const { type } = this.props.announcement;
-    let cls = "text-left p-2 mb-4 ";
+    let cls = "text-left p-4 mb-4 ";
     switch (type) {
       case "announcement":
         cls = cls + "announcement-card ";

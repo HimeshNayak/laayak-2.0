@@ -79,7 +79,7 @@ class MainPage extends Component {
   }
 
   copyLink = () => {
-    const link = "localhost:3000/student/"+this.state.crCode;    
+    const link = "localhost:3000/student/" + this.state.crCode;
     const el = document.createElement("textarea");
     el.innerText = link;
     document.body.appendChild(el);
@@ -155,8 +155,8 @@ class MainPage extends Component {
         <div className="m-4 ann-container">
           {this.state.announcements.map((announcement) => (
             <div key={announcement.dateAndTime}>
-              <Announcement                
-                announcement={announcement}                
+              <Announcement
+                announcement={announcement}
                 id={announcement.dateAndTime}
                 onDelete={this.deleteAnnouncement}
               />
@@ -169,9 +169,8 @@ class MainPage extends Component {
         </div>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
         {/* button to add a new subject */}
-        <AddSubject 
-        addSubject={this.addSubject}
-        addTeachSubject={this.addTeachSubject}
+        <AddSubject
+          addSubject={this.addSubject}
         />
         <div className="my-flex-container">
           {this.state.subjects.map((subject) => (
@@ -210,19 +209,37 @@ class MainPage extends Component {
   };
 
   // All add functions
-  addSubject = (newSubject) => {
-    // const finSubjects = [...this.state.subjects, newSubject];
-
+  addSubject = (addSubject) => {
+    const classId = this.state.crCode;
+    const teachClassRef = db.collection("teachers").doc(addSubject.teacherId).collection("classes").doc(classId);
+    const teachClass = {
+      details: {
+        course: this.state.details.course,
+      branch: this.state.details.branch,
+      sem: this.state.details.sem,
+      crName: this.state.details.crName
+      },      
+      subjects: [{
+        name: addSubject.subject,
+        code: addSubject.subjectCode
+      }]
+    }
+    const { subject, subjectCode, teacher } = addSubject;
+    const newSubject = { subject, subjectCode, teacher }
     this.docRef.update({
       subjects: firebase.firestore.FieldValue.arrayUnion(newSubject)
     });
-  };
 
-  addTeachSubject = (id, newSubject) => {    
-    db.collection("teachers").doc(id).update({
-      subjects: firebase.firestore.FieldValue.arrayUnion(Object.assign(newSubject, {course: this.state.details.course}))
+    db.runTransaction((trans) => {      
+      return trans.get(teachClassRef).then((doc) => {
+        if(doc.exists){
+          trans.update(teachClassRef, {subjects: firebase.firestore.FieldValue.arrayUnion(teachClass.subjects[0])});
+        } else{
+          teachClassRef.set(teachClass)
+        }
+      })
     })
-  }
+  };
 
   addLecture = (newLecture) => {
     const finLectures = [...this.state.lecturesToday, newLecture];
@@ -232,14 +249,14 @@ class MainPage extends Component {
   };
 
   AddAnnouncement = (newAnnouncement) => {
-    const finAnnouncements = [...this.state.announcements, newAnnouncement];    
+    const finAnnouncements = [...this.state.announcements, newAnnouncement];
     this.docRefUp.update({
       announcements: finAnnouncements,
     });
   };
 
   // All update/edit functions
-  handleDetailsEdit = () => {};
+  handleDetailsEdit = () => { };
 
   // All delete functions
   deleteAnnouncement = (dateAndTime) => {

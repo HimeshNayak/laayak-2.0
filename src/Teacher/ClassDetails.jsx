@@ -14,7 +14,6 @@ class classDetails extends Component {
   state = {
     details: [],
     announcements: [],
-    user: firebase.auth().currentUser,
     classId: this.props.location.state.classId
   };
 
@@ -130,13 +129,17 @@ class classDetails extends Component {
     this.docRefUp.update({
       announcements: firebase.firestore.FieldValue.arrayUnion(newAnnouncement),
     });
+    this.setState({
+      announcements: []
+    })
   };
-  deleteAnnouncement = (dateAndTime) => {
+  deleteAnnouncement = (announcement) => {
     this.docRefUp.update({
-      announcements: this.state.announcements.filter(
-        (a) => a.dateAndTime !== dateAndTime
-      ),
+      announcements: firebase.firestore.FieldValue.arrayRemove(announcement),      
     });
+    this.setState({
+      announcements: []
+    })
   };
 }
 export default classDetails;

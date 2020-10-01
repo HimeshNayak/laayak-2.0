@@ -19,12 +19,14 @@ class Announcement extends Component {
   state = {};
 
   render() {
+    const {isOfficial} = this.props.announcement;
     return (
       <div className={this.getClass()} style={{ position: "relative" }}>
+        { isOfficial && <i className="fa fa-bookmark ml-2 mb-3 text-danger" style={{fontSize: "30px", position: "relative"}}></i> }
         {this.displayUpdate()}
         <div style={{ position: "absolute", top: "5%", right: "1%" }}>
           {this.createButtons()}
-        </div>
+        </div>        
       </div>
     );
   }
@@ -44,7 +46,7 @@ class Announcement extends Component {
   };
 
   displayAnnouncement = () => {
-    const { dateAndTime, text, isOfficial } = this.props.announcement;
+    const { dateAndTime, text } = this.props.announcement;
     let dateTime = dateAndTime.toDate();
     const date = dateTime.getDate();
 
@@ -60,8 +62,7 @@ class Announcement extends Component {
       mins = dateTime.getMinutes();
     mins < 10 ? (min = "0" + String(mins)) : (min = String(mins));
     return (
-      <div>
-        { isOfficial && <i className="fa fa-bookmark ml-2 mb-3 text-danger" style={{fontSize: "30px"}}></i> }
+      <div>        
         <p>
           Posted On:{" "}
           <strong>
@@ -81,7 +82,7 @@ class Announcement extends Component {
   };
 
   displayLink = () => {
-    const { dateAndTime, text, link, isOfficial } = this.props.announcement;
+    const { dateAndTime, text, link } = this.props.announcement;
     let dateTime = dateAndTime.toDate();
     const date = dateTime.getDate();
 
@@ -99,7 +100,7 @@ class Announcement extends Component {
 
     return (
       <div>
-        { isOfficial && <i className="fa fa-bookmark ml-2 mb-3 text-danger" style={{fontSize: "30px"}}></i> }
+        
         <p>
           Posted On:{" "}
           <strong>
@@ -138,8 +139,7 @@ class Announcement extends Component {
       yesCount,
       yesOption,
       noCount,
-      noOption,
-      isOfficial
+      noOption
     } = this.props.announcement;
     let dateTime = dateAndTime.toDate();
     const date = dateTime.getDate();
@@ -160,8 +160,7 @@ class Announcement extends Component {
     let noVotePercent = (noCount * 100) / (noCount + yesCount);
     if (Number.isNaN(noVotePercent)) noVotePercent = 0;
     return (
-      <div>
-        { isOfficial && <i className="fa fa-bookmark ml-2 mb-3 text-danger" style={{fontSize: "30px"}}></i> }
+      <div>        
         <p>
           Posted On:{" "}
           <strong>
@@ -217,7 +216,7 @@ class Announcement extends Component {
 
   getClass = () => {
     const { type } = this.props.announcement;
-    let cls = "text-left p-2 mb-4 ";
+    let cls = "text-left p-4 mb-4 ";
     switch (type) {
       case "announcement":
         cls = cls + "announcement-card ";
@@ -237,10 +236,10 @@ class Announcement extends Component {
   createButtons = () => {
     return (
       <button
-        className="btn btn-danger btn-sm m-1"
+        className="btn"
         onClick={() => this.props.onDelete(this.props.announcement.dateAndTime)}
       >
-        Delete
+        <span role="img" aria-label="delete">❌</span>
       </button>
     );
   };

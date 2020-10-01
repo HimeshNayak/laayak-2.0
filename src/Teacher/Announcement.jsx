@@ -217,7 +217,7 @@ class Announcement extends Component {
 
   getClass = () => {
     const { type } = this.props.announcement;
-    let cls = "text-left p-2 mb-4 ";
+    let cls = "text-left p-4 mb-4 ";
     switch (type) {
       case "announcement":
         cls = cls + "announcement-card ";
@@ -237,10 +237,10 @@ class Announcement extends Component {
   createButtons = () => {
     return (
       <button
-        className="btn btn-danger btn-sm m-1"
-        onClick={() => this.props.onDelete(this.props.announcement.dateAndTime)}
+        className="btn"
+        onClick={() => this.props.onDelete(this.props.announcement)}
       >
-        Delete
+        <span role="img" aria-label="delete">❌</span>
       </button>
     );
   };

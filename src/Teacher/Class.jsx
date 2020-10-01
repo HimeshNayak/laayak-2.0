@@ -21,7 +21,7 @@ class Class extends Component {
                 <br />
                 CR : <strong>{this.props.details.crName}</strong>
                 <br />
-                Subject: <strong>{this.props.details.subject}</strong>
+                Subject: <strong>{this.props.subject.name}</strong>
               </p>
             </div>
             <Link
