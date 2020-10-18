@@ -5,34 +5,28 @@ class Class extends Component {
   state = {};
   render() {
     return (
-      <div style={{ marginBottom: 8 }}>
-        <div style={{ margin: 4, height: "100%" }}>
-          <div
-            className="card shadow-hover my-card-details subject-card"
-            style={{ width: "18rem" }}
-          >
-            <div className="card-body p-0">
-              <p className="card-text">
-                Course: <strong>{this.props.details.course}</strong>                
-                <br />
-                Branch: <strong>{this.props.details.branch}</strong>
-                <br />
-                Semester: <strong>{this.props.details.sem}</strong>
-                <br />
-                CR : <strong>{this.props.details.crName}</strong>
-                <br />
-                Subject: <strong>{this.props.subject.name}</strong>
-              </p>
-            </div>
+      <div className="up-container d-flex flex-column container-fluid">
+        <div className="up mx-auto">
+          <div className="ann-preview">    
+            <ul>
+              {this.props.class.subjects.map((sub) => (
+                <h4 key={sub.code}><li>{sub.name}</li></h4>
+              ))}
+            </ul>    
+          </div>
+          <div className="ann-info text-left"> 
+            <h4><strong>Course: </strong>{this.props.class.details.course}</h4>
+            <h4><strong>Branch: </strong>{this.props.class.details.branch}</h4>
+            <h4><strong>Semester: </strong>{this.props.class.details.sem}</h4>
+            <h4><strong>CR: </strong>{this.props.class.details.crName}</h4>
             <Link
-            className="btn btn-success btn-sm"
+            className="btn link-btn btn-primary mt-2 float-right"
             to={{
               pathname: "/teacher/class",
               state: {
-                classId: this.props.details.classId
+                classId: this.props.class.details.classId
               }
-            }}
-            >More Info</Link>            
+            }} > More Info </Link>
           </div>
         </div>
       </div>

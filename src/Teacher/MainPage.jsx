@@ -5,6 +5,7 @@ import Lecture from "./Lecture";
 import AddLecture from "./AddLecture";
 import Loader from "../Loader/Loader";
 import firebase from "../firebase";
+import BottomNav from "../BottomNav/bnav";
 
 // reference to firestore
 
@@ -71,44 +72,7 @@ class MainPage extends Component {
             }
           })
         })
-      })
-      // this.collRef.onSnapshot((querySnapshot) => {
-      //   querySnapshot.docs.forEach((doc) => {
-      //     doc.data().subjects.forEach(subject => {
-      //       this.teachRef.onSnapshot((teacher) => {
-      //         teacher.data().subjects.forEach((teachSub) => {
-      //           if (subject.subjectCode === teachSub.subjectCode) {
-      //             if (this.isMount) {
-      //               let { classesTeaching } = this.state;
-      //               const temp = { ...doc.data().details, subject: teachSub.subjectName, classId: doc.id };
-      //               classesTeaching.push(temp)
-      //               // Object.assign(doc.data().details, { classId: doc.id, subject: teachSub.subjectName })
-      //               this.setState({ classesTeaching })
-      //             }
-      //             this.collRef.doc(doc.id).collection("lectures").doc("lecturesToday").onSnapshot((lecDoc) => {
-      //               lecDoc.data().lectures.forEach((lecture) => {
-      //                 if (lecture.subjectCode === teachSub.subjectCode) {
-      //                   if (this.isMount) {
-      //                     let { lecturesToday } = this.state;
-      //                     const foundLecture = {
-      //                       ...lecture,
-      //                       branch: doc.data().details.branch,
-      //                       sem: doc.data().details.sem,
-      //                       subject: teachSub.subjectName,
-      //                       classId: doc.id
-      //                     }
-      //                     lecturesToday.push(foundLecture)
-      //                     this.setState({ lecturesToday })
-      //                   }
-      //                 }
-      //               })
-      //             });
-      //           }
-      //         })
-      //       })
-      //     })
-      //   })
-      // });
+      })      
     }, 2000)
   }
 
@@ -129,12 +93,12 @@ class MainPage extends Component {
             Sign Out
           </button>
         </div>
-        <h2 className="subHeading">Your Details: </h2>
+        <h2 id="Details" className="subHeading">Your Details: </h2>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
 
         <Details details={this.state.details} onEdit={this.handleDetailsEdit} />
         {/* lectures on the day */}
-        <h2 className="subHeading">Lectures Today:</h2>
+        <h2 id="Lectures" className="subHeading">Lectures Today:</h2>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
 
         <AddLecture
@@ -152,19 +116,19 @@ class MainPage extends Component {
           ))}
         </div>
         {/* CLASSES YOU TEACH */}
-        <h2 className="subHeading">Classes You Teach:</h2>
+        <h2 id="Classes" className="subHeading">Classes You Teach:</h2>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
         <div className="my-flex-container">
-          {this.state.classesTeaching.map((classTeaching) => (
-            classTeaching.subjects.map((subTeaching) =>(
+          {this.state.classesTeaching.map((classTeaching) => (            
               <Class
-              details={classTeaching.details}
-              subject={subTeaching}
-              key={classTeaching.details.classId + subTeaching.code}
-            />
-            ))            
+              key={classTeaching.details.classId}
+              class={classTeaching}              
+            />           
           ))}
         </div>
+        <BottomNav
+          paths={["Details", "Lectures", "Classes"]}
+        />
       </div>
     );
     return display

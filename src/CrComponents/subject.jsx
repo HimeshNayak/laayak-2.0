@@ -4,30 +4,24 @@ class Subject extends Component {
   state = {};
   render() {
     return (
-      <div style={{ marginBottom: 8 }}>
-        <div style={{ margin: 4, height: "100%" }}>
-          <div
-            className="card shadow-hover my-card-details subject-card"
-            style={{ width: "18rem" }}
-          >
-            <div className="card-body p-0">
-              <h5 className="card-title">{this.props.subject.subject}</h5>
-              <p className="card-text">
-                Subject Code: <strong>{this.props.subject.subjectCode}</strong>
-                <br />
-                Teacher: <strong>{this.props.subject.teacher}</strong>
-              </p>
-            </div>
-
-            <button
-              className="btn btn-sm btn-danger"
-              onClick={() =>
-                this.props.onDelete(this.props.subject.subjectCode)
-              }
-            >
-              Delete
-            </button>
+      <div className="up-container flex container mx-auto" style={{ maxWidth: "500px" }}>
+        <div className="up">
+          <div className="ann-preview">
+            <h3><span role="img" className="emoji" aria-label="books">📚</span></h3>
           </div>
+          <div className="ann-info text-left">
+            <h2><strong>{this.props.subject.subject}</strong></h2>
+            <h4>Subject Code: {this.props.subject.subjectCode}</h4>
+            <h4>Teacher: {this.props.subject.teacher}</h4>
+            <div style={{ position: "absolute", top: "5%", right: "5%" }}>
+              <button
+                className="btn"
+                onClick={() => this.props.onDelete(this.props.subject)}
+              >
+                <span role="img" aria-label="delete">❌</span>
+              </button>
+            </div>
+          </div>          
         </div>
       </div>
     );

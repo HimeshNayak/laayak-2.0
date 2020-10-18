@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import firebase from "../firebase";
+import Modal from 'react-bootstrap/Modal';
+
 class AddLecture extends Component {
   isMount = false;
   state = {
@@ -42,12 +44,18 @@ class AddLecture extends Component {
         <button className="btn-info btn-lg mb-4" onClick={this.showModal}>
           Add Lecture +
         </button>
-        <div className={this.showHideClassName()} style={this.styles}>
-          {this.getForm()}
-          <button className="btn btn-info m-2" onClick={this.hideModal}>
-            Close
-          </button>
-        </div>
+        <Modal        
+        show={this.state.show} 
+        onHide={this.hideModal}
+        dialogClassName="modal-dialog-scrollable modal-lg"
+        >
+        <Modal.Header closeButton>
+          <Modal.Title><h3>Add Lecture Details:</h3></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        {this.getForm()}
+        </Modal.Body>        
+      </Modal>
       </div>
     );
   }
@@ -56,7 +64,6 @@ class AddLecture extends Component {
     return (
       <div>
         <form className="m-2" onSubmit={this.callAddLecture}>
-          <h3>Add Lecture Details:</h3>
           <div className="col-sm-7" style={{ margin: "auto" }}>
             <label>Subject: </label>
             <select
@@ -174,7 +181,7 @@ class AddLecture extends Component {
   callAddLecture = (e) => {
     e.preventDefault(); // preventing reload
     const start = Date.parse(this.state.startTime),
-      end = Date(this.state.endTime);
+      end = Date.parse(this.state.endTime);
 
     const startDate = new Date(start),
       endDate = new Date(end);

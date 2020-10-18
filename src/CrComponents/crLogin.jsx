@@ -22,20 +22,27 @@ class CrLogin extends Component {
   handleLogin = (e) => {
     e.preventDefault();
     const email = this.state.email,
-    pass = this.state.password;
+      pass = this.state.password;
     db.collection("students").doc("listOfCRs").get().then((doc) => {
-    if(doc.data().listOfCRs[email]){
-    firebase.auth().signInWithEmailAndPassword(email, pass)
-      .then(() => {
-          alert("logged in successfully");        
-        })
-      .catch((err) => {
-        alert(err.message);
-      });
-    } else{
-      alert("You are not a CR")
-    }
-  })
+      if (doc.data().listOfCRs[email]) {
+        firebase.auth().signInWithEmailAndPassword(email, pass)
+          .then(() => {
+            alert("logged in successfully");
+          })
+          .catch((err) => {
+            if (err.message === "The password is invalid or the user does not have a password.") {
+              // alert("wrong")
+              document.getElementById("password").classList.add("wrong-pass");
+              setTimeout(() => {
+                document.getElementById("password").classList.remove("wrong-pass");
+              }, 10000)
+            }
+            // alert(err.message);
+          });
+      } else {
+        alert("You are not a CR")
+      }
+    })
   };
 
   // handleLogin = (e) => {
@@ -84,6 +91,7 @@ class CrLogin extends Component {
             <div className="col-sm-10">
               <input
                 type="password"
+                id="password"
                 className="form-control"
                 value={this.state.password}
                 name="password"

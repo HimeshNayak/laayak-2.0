@@ -1,17 +1,38 @@
 @import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Acme&display=swap");
 body {
-  background: #800080; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
+  /* background: #800080;  */
+  /*fallback for old browsers*/
+  /* background: -webkit-linear-gradient(
     to bottom,
     #ffc0cb,
     #800080
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
+  );  */
+  /* Chrome 10-25, Safari 5.1-6*/
+  /* background: linear-gradient(
     to bottom,
     #ffc0cb,
     #800080
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  ); */
+   /*W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+  /* background: #fad0c47d; */
+  /*fallback for old browsers*/
+  /* background: -webkit-linear-gradient(315deg, #fad0c4 0%, #f1a7f1 74%);  */
+  /* Chrome 10-25, Safari 5.1-6*/
+  /* background: linear-gradient(315deg, #fad0c4 0%, #f1a7f1 74%); */
+  /*W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+  background: rgba(119,161,211,1);
+  /*fallback for old browsers*/
+  background: -webkit-linear-gradient( 109.6deg,  rgba(121,203,202,1) 11.2%, rgba(119,161,211,1) 91.1% );
+  /* Chrome 10-25, Safari 5.1-6*/
+  background: linear-gradient( 109.6deg,  rgba(121,203,202,1) 11.2%, rgba(119,161,211,1) 91.1% );
+  /*W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
 
   text-align: center;
   font-family: "Acme", sans-serif;
@@ -21,6 +42,15 @@ body {
   height: 100%;
   background-attachment: fixed;
   overflow-x: hidden;
+}
+
+.dark {
+  background: rgba(0,0,0,0.15);
+  /*fallback for old browsers*/
+  background: -webkit-linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.15) 100%), -webkit-radial-gradient(at top center, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.40) 120%) #989898;
+  /* Chrome 10-25, Safari 5.1-6*/
+  background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.15) 100%), radial-gradient(at top center, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.40) 120%) #989898
+  /*W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */  
 }
 
 .title {
@@ -55,4 +85,86 @@ body {
 
 .dev-email {
   color: rgba(29, 29, 29, 0.842);
+}
+
+
+/* Developers */
+.dev-container {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  padding: 15px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s;
+}
+
+.social {
+  width: 40px;
+  height: 40px;
+  background: #faebd78a;
+  border-radius: 50%;  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  z-index: -1;
+  transition: 0.5s;
+}
+
+.name {
+  color: #212529;
+  font-size: 20px;  
+  letter-spacing: -10px;
+  position: absolute;
+  z-index: -1;
+  transition: 0.5s;
+}
+
+.dev-container img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 50%;
+}
+
+.dev-container:hover {
+  transform: translateY(25px);
+}
+
+.dev-container:hover .name {
+  letter-spacing: normal;
+  transform: translateY(80px);
+}
+
+.dev-container:hover img {
+  box-shadow: 0 0 20px rgb(129, 43, 128);
+}
+
+.dev-container:hover .social {
+  transition-delay: 0.1s;
+  box-shadow: 0 0 20px rgb(129, 43, 128);
+}
+
+.dev-container:hover .social:nth-child(1) {  
+  transform: rotate(-45deg) translateY(-90px);
+}
+
+.dev-container:hover .social:nth-child(2) {
+  transform:  translateY(-90px);
+}
+
+.dev-container:hover .social:nth-child(3) {
+  transform:  rotate(45deg) translateY(-90px);
+}
+
+.dev-container a {
+  transition: 1s;
+  text-decoration: none;
+  color: #212529;
+}
+
+.social:hover a {  
+  color: rgb(129, 43, 128);
+  transform: rotate(360deg);
 }

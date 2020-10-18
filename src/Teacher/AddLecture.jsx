@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import firebase from "../firebase";
+import Modal from 'react-bootstrap/Modal';
+
 class AddLecture extends Component {
   isMount = false;
   state = {
@@ -23,33 +25,39 @@ class AddLecture extends Component {
   };
 
   // modal show/hide class
-  showHideClassName = () => (this.state.show ? "" : "d-none");
+  // showHideClassName = () => (this.state.show ? "" : "d-none");
 
-  styles = {
-    position: "fixed",
-    display: "block",
-    background: "pink",
-    color: "black",
-    width: "80%",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%,-50%)",
-    zIndex: 1,
-    boxShadow: "2px 2px 10px 10px rgba(255, 31, 255, 0.226)",
-  };
+  // styles = {
+  //   position: "fixed",
+  //   display: "block",
+  //   background: "pink",
+  //   color: "black",
+  //   width: "80%",
+  //   top: "50%",
+  //   left: "50%",
+  //   transform: "translate(-50%,-50%)",
+  //   zIndex: 1,
+  //   boxShadow: "2px 2px 10px 10px rgba(255, 31, 255, 0.226)",
+  // };
 
   render() {
     return (
       <div>
         <button className="btn-info btn-lg mb-4" onClick={this.showModal}>
           Add Lecture +
-        </button>
-        <div className={this.showHideClassName()} style={this.styles}>
-          {this.getForm()}
-          <button className="btn btn-info m-2" onClick={this.hideModal}>
-            Close
-          </button>
-        </div>
+        </button>        
+        <Modal        
+        show={this.state.show} 
+        onHide={this.hideModal}
+        dialogClassName="modal-dialog-scrollable modal-lg"
+        >
+        <Modal.Header closeButton>
+          <Modal.Title><h3>Add Lecture Details:</h3></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        {this.getForm()}
+        </Modal.Body>        
+      </Modal>
       </div>
     );
   }
@@ -57,8 +65,7 @@ class AddLecture extends Component {
   getForm = () => {
     return (
       <div>
-        <form className="m-2" onSubmit={this.callAddLecture}>
-          <h3>Add Lecture Details:</h3>          
+        <form className="m-2" onSubmit={this.callAddLecture}>          
           <div className="col-sm-7" style={{ margin: "auto" }}>
             <label>Branch: </label>
             <select
@@ -183,7 +190,7 @@ class AddLecture extends Component {
           </div>
           <button className="btn btn-success" type="submit">
             Add Lecture
-          </button>
+          </button>          
         </form>
       </div>
     );
@@ -198,13 +205,6 @@ class AddLecture extends Component {
       subjectCode: code
     })
   }
-
-  // handleBranchChange = (e) => {
-  //   const val = e.target.value;    
-  //   this.setState({
-  //     branch: val,      
-  //   });
-  // };
 
   handleSemChange = (e) => {
     const val = e.target.value;
@@ -225,7 +225,6 @@ class AddLecture extends Component {
     let nam = event.target.name;
     let val = event.target.value;    
     this.setState({ [nam]: val });
-    console.log(this.state);
   };
 
   callAddLecture = (e) => {

@@ -1,22 +1,17 @@
 import React, { Component } from "react";
+import ShowMoreText from 'react-show-more-text';
 
 class Lecture extends Component {
   state = {};
   render() {
     return (
-      <div
-        className="lec-card shadow-hover my-card-details p-2"
-        style={{ minWidth: "18rem", marginRight: "30px" }}
-      >
-        {this.renderLecture()}
-      </div>
+      this.renderLecture()
     );
   }
 
   renderLecture = () => {
     const {
       subject,
-      subjectCode,
       teacher,
       startTime,
       endTime,
@@ -31,8 +26,8 @@ class Lecture extends Component {
     if (startHour > 12) {
       startHour = startHour - 12;
       startAmPm = "pm";
-    }    
-    
+    }
+
     let startMin = (startMins < 10) ? ("0" + String(startMins)) : String(startMins);
     let endHour = endTime.toDate().getHours(),
       endMins = endTime.toDate().getMinutes(),
@@ -45,46 +40,50 @@ class Lecture extends Component {
     let endMin = endMins < 10 ? ("0" + String(endMins)) : String(endMins);
 
     return (
-      <div>
-        <p>
-          Subject: <strong>{subject}</strong>
-        </p>
-        <p>
-          Subject Code: <strong>{subjectCode}</strong>
-        </p>
-        <p>
-          Teacher: <strong>{teacher}</strong>
-        </p>
+      <div className="container">
+        <div className="lec lec-hover" id="lec">
+          <div className="lec-preview">
+            <div className="time">
+              <h3>{startHour} : {startMin} {startAmPm}</h3>
+              <div className="mb-2" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span className="vertical-line" style={{ height: "20px" }}></span>
+                {/* <span className="vertical-line" style={{ height: "45px", margin: "0 1px" }}></span> */}
+                {/* <span className="vertical-line" style={{ height: "25px" }}></span> */}
+              </div>
+              <h3>{endHour} : {endMin} {endAmPm}</h3>
+            </div>
+            <hr />
+            <br />
+            <a
+              className="lec-btn btn-primary mt-2"
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer" >
+              Join now
+              </a>
+          </div>
+          <div className="lec-info text-left">
+            <div className="main-data">
+              <h2><strong>{subject}</strong></h2>
+              <h4>Teacher: {teacher}</h4>
+              <h4>Group: {group ? group : "All"}</h4>
+            </div>
+            <hr />
+            <h5><strong>Description: </strong>
+              <ShowMoreText
+                lines={2}
+                more="More"
+                less="Less"
+                anchorClass=""
+                onClick={(e) => document.getElementById("lec").classList.contains("lec-hover") ?
+                  document.getElementById("lec").classList.remove("lec-hover") :
+                  document.getElementById("lec").classList.add("lec-hover")}
+                expanded={false}>
+                {text ? text : "No Info Provided"}
+              </ShowMoreText>
+            </h5>
 
-        <p>
-          Timings:{" "}
-          <strong>
-            {startHour} : {startMin} {startAmPm} to {endHour} : {endMin}{" "}
-            {endAmPm}
-          </strong>
-        </p>
-        <p>
-          Group: <strong>{group ? group : "All"}</strong>
-        </p>
-        <p className="mb-0">
-          Description: <strong>{text}</strong>
-        </p>
-        <br />
-        <div className="btn-lec">
-          <a
-            href={link}
-            className="btn btn-primary mt-0 join-copy"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Join now
-          </a>
-          <button
-            className="btn btn-success mt-0 join-copy"
-            onClick={this.copyLink}
-          >
-            Copy Link
-          </button>
+          </div>
         </div>
       </div>
     );

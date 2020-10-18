@@ -19,14 +19,11 @@ class Announcement extends Component {
   state = {};
 
   render() {
-    const {isOfficial} = this.props.announcement;
     return (
-      <div className={this.getClass()} style={{ position: "relative" }}>
-        { isOfficial && <i className="fa fa-bookmark ml-2 mb-3 text-danger" style={{fontSize: "30px", position: "relative"}}></i> }
-        {this.displayUpdate()}
-        <div style={{ position: "absolute", top: "5%", right: "1%" }}>
-          {this.createButtons()}
-        </div>        
+      <div className="up-container d-flex flex-column container-fluid">
+        <div className="up mx-auto">
+          {this.displayUpdate()}
+        </div>
       </div>
     );
   }
@@ -41,94 +38,73 @@ class Announcement extends Component {
       case "link":
         return this.displayLink();
       default:
-        return ;
+        return;
     }
   };
 
   displayAnnouncement = () => {
-    const { dateAndTime, text } = this.props.announcement;
+    const { dateAndTime, text, isOfficial } = this.props.announcement;
     let dateTime = dateAndTime.toDate();
     const date = dateTime.getDate();
 
-    const month = months[dateTime.getMonth()];
+    const month = months[dateTime.getMonth() - 1];
     const year = dateTime.getFullYear();
     let hour = dateTime.getHours();
-    let ampm = "am";
-    if (hour > 12) {
-      hour -= 12;
-      ampm = "pm ";
-    }
     let min = "00",
       mins = dateTime.getMinutes();
     mins < 10 ? (min = "0" + String(mins)) : (min = String(mins));
     return (
-      <div>        
-        <p>
-          Posted On:{" "}
-          <strong>
-            {month} {date}, {year}
-          </strong>{" "}
-          at{" "}
-          <strong>
-            {hour}: {min}
-            {ampm}
-          </strong>
-        </p>
-        <p>
-          Announcement: <strong>{text}</strong>
-        </p>
-      </div>
+      <>
+        <div className="ann-preview">
+          {isOfficial && <i className="fa fa-bookmark float-right mr-n4 mt-n4 text-danger" style={{ fontSize: "30px" }}></i>}
+          <h3><span role="img" className="emoji" aria-label="announcement">📢</span></h3>
+        </div>
+        <div className="ann-info text-left">
+        <h6 style={{ width: "fit-content" }} className="mb-3">{month} {date}, {year} at {hour}:{min}</h6>
+          <div style={{ minHeight: "50%", display: "flex", alignItems: "center" }}>
+            <h4>{text}</h4>
+          </div>
+          <div style={{ position: "absolute", top: "5%", right: "1%" }}>
+            {this.createButtons()}
+          </div>
+        </div>
+      </>
     );
   };
 
   displayLink = () => {
-    const { dateAndTime, text, link } = this.props.announcement;
+    const { dateAndTime, text, link, isOfficial } = this.props.announcement;
     let dateTime = dateAndTime.toDate();
     const date = dateTime.getDate();
 
-    const month = months[dateTime.getMonth()];
+    const month = months[dateTime.getMonth() - 1];
     const year = dateTime.getFullYear();
     let hour = dateTime.getHours();
-    let ampm = "am";
-    if (hour > 12) {
-      hour -= 12;
-      ampm = "pm ";
-    }
     let min = "00",
       mins = dateTime.getMinutes();
     mins < 10 ? (min = "0" + String(mins)) : (min = String(mins));
 
     return (
-      <div>
-        
-        <p>
-          Posted On:{" "}
-          <strong>
-            {month} {date}, {year}
-          </strong>{" "}
-          at{" "}
-          <strong>
-            {hour}: {min}
-            {ampm}
-          </strong>
-        </p>
-        <p>
-          Link:{" "}
-          <span className="alert-link">
-            <strong>{link}</strong>
-          </span>
-        </p>
-        <p>
-          About this Link: <strong>{text}</strong>
-        </p>
-        <a
-          href={link}
-          className="btn btn-sm btn-danger mb-2"
-          target="about_blank"
-        >
-          Go to Link
-        </a>
-      </div>
+      <>
+        <div className="ann-preview">
+          {isOfficial && <i className="fa fa-bookmark float-right mr-n4 mt-n4 text-danger" style={{ fontSize: "30px" }}></i>}
+          <h3><span role="img" className="emoji" aria-label="announcement">🔗</span></h3>
+        </div>
+        <div className="ann-info text-left">
+          <h6 style={{ width: "fit-content" }} className="mb-3">{month} {date}, {year} at {hour}:{min}</h6>
+          <h4>{text}</h4>
+          <a
+            className="btn link-btn btn-primary mt-2 float-right"
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer" >
+            Visit Link
+              </a>
+          <div style={{ position: "absolute", top: "5%", right: "1%" }}>
+            {this.createButtons()}
+          </div>
+        </div>
+      </>
     );
   };
 
@@ -139,19 +115,15 @@ class Announcement extends Component {
       yesCount,
       yesOption,
       noCount,
-      noOption
+      noOption,
+      isOfficial
     } = this.props.announcement;
     let dateTime = dateAndTime.toDate();
     const date = dateTime.getDate();
 
-    const month = months[dateTime.getMonth()];
+    const month = months[dateTime.getMonth() - 1];
     const year = dateTime.getFullYear();
     let hour = dateTime.getHours();
-    let ampm = "am";
-    if (hour > 12) {
-      hour -= 12;
-      ampm = "pm ";
-    }
     let min = "00",
       mins = dateTime.getMinutes();
     mins < 10 ? (min = "0" + String(mins)) : (min = String(mins));
@@ -160,57 +132,39 @@ class Announcement extends Component {
     let noVotePercent = (noCount * 100) / (noCount + yesCount);
     if (Number.isNaN(noVotePercent)) noVotePercent = 0;
     return (
-      <div>        
-        <p>
-          Posted On:{" "}
-          <strong>
-            {month} {date}, {year}
-          </strong>{" "}
-          at{" "}
-          <strong>
-            {hour}: {min}
-            {ampm}
-          </strong>
-        </p>
-        <p>
-          Poll: <strong>{text}</strong>
-        </p>
-
-        <div className="row">
-          <div className="col-md-6">
-            <table className="table">
-              <tr>
-                <td>Option</td>
-                <td>{yesOption}</td>
-              </tr>
-              <tr>
-                <td>Votes</td>
-                <td>{yesCount}</td>
-              </tr>
-              <tr>
-                <td>Percentage</td>
-                <td> {yesVotePercent.toFixed(2)}% </td>
-              </tr>
-            </table>
+      <>
+        <div className="ann-preview">
+          {isOfficial && <i className="fa fa-bookmark float-right mr-n4 mt-n4 text-danger" style={{ fontSize: "30px" }}></i>}
+          <h3><span role="img" className="emoji" aria-label="announcement">🗳️</span></h3>
+        </div>
+        <div className="ann-info text-left">
+        <h6 style={{ width: "fit-content" }} className="mb-3">{month} {date}, {year} at {hour}:{min}</h6>
+          <h4>{text}</h4>
+          <div className="row">
+            <div className="col-md-12">
+              <table className="table">
+                <tbody>
+                  <tr>
+                    <td>{yesOption}</td>
+                    <td>{noOption}</td>
+                  </tr>
+                  <tr>
+                    <td>{yesCount}</td>
+                    <td>{noCount}</td>
+                  </tr>
+                  {/* <tr>
+                    <td> {yesVotePercent.toFixed(2)}% </td>
+                    <td> {noVotePercent.toFixed(2)}% </td>
+                  </tr> */}
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div className="col-md-6">
-            <table className="table">
-              <tr>
-                <td>Option</td>
-                <td>{noOption}</td>
-              </tr>
-              <tr>
-                <td>Votes</td>
-                <td>{noCount}</td>
-              </tr>
-              <tr>
-                <td>Percentage</td>
-                <td> {noVotePercent.toFixed(2)}% </td>
-              </tr>
-            </table>
+          <div style={{ position: "absolute", top: "5%", right: "1%" }}>
+            {this.createButtons()}
           </div>
         </div>
-      </div>
+      </>
     );
   };
 
@@ -228,7 +182,7 @@ class Announcement extends Component {
         cls = cls + "link-card";
         break;
       default:
-          return;
+        return;
     }
     return cls;
   };

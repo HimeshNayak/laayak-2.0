@@ -10,6 +10,7 @@ import AddPoll from "./addPoll";
 import AddLink from "./addLink";
 import firebase from "../firebase";
 import BottomNav from "../BottomNav/bnav";
+import Loader from "../Loader/Loader";
 
 // reference to firestore
 
@@ -23,6 +24,7 @@ class MainPage extends Component {
     announcements: [],
     user: firebase.auth().currentUser,
     crCode: this.props.CrCode,
+    loading: true
   };
 
   collRef = db.collection("classes");
@@ -47,16 +49,19 @@ class MainPage extends Component {
 
   // extracting data from db
   componentDidMount() {
-    this.docRef.onSnapshot((doc) => {
-      if (doc.data()) {
-        this.setState({
-          subjects: doc.data().subjects.map((subject) => {
-            return { ...subject };
-          }),
-          details: doc.data().details,
-        });
-      }
-    });
+    setTimeout(() => {
+      this.docRef.onSnapshot((doc) => {
+        if (doc.data()) {
+          this.setState({
+            subjects: doc.data().subjects.map((subject) => {
+              return { ...subject };
+            }),
+            details: doc.data().details,
+            loading: false
+          });
+        }
+      });
+    }, 2000);
     this.docRefLec.onSnapshot((doc) => {
       if (doc.data()) {
         this.setState({
@@ -90,7 +95,7 @@ class MainPage extends Component {
   };
 
   render() {
-    return (
+    const display = this.state.loading ? <Loader /> : (
       <div className="container-fluid">
         <div className="code-head-btn">
           {/* <h5>Code: {this.state.crCode}</h5> */}
@@ -107,7 +112,7 @@ class MainPage extends Component {
           </button>
         </div>
         {/* lectures on the day */}
-        <div id="lectures">
+        <div id="Lectures">
           <h2 className="subHeading">Lectures Today:</h2>
         </div>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
@@ -125,7 +130,7 @@ class MainPage extends Component {
           ))}
         </div>
         {/* Announcement/polls/links */}
-        <div id="announcements">
+        <div id="Announcements">
           <div className="d-inline container-fluid">
             <h2 className="subHeading">Mitron! Announcement Suno <span role="img" aria-label="announcement">📢</span></h2>
             <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
@@ -138,33 +143,32 @@ class MainPage extends Component {
           </div>
 
           <div className="key-container">
-            <h5 className="m-2" style={{ textDecoration: "underline" }}>
-              Key
-            </h5>
-            <div className="announcement-card m-2" style={{ width: "120px" }}>
-              <span className="p-2">Announcements</span>
+            <div className="poll-card m-2" style={{ width: "90px" }}>
+              <span className="p-2"><i className="fa fa-bookmark text-danger mr-1" /> Official</span>
             </div>
-            <div className="link-card m-2" style={{ width: "50px" }}>
-              <span className="p-2">Links</span>
+            <div className="poll-card m-2" style={{ width: "150px" }}>
+              <span className="p-2"><span role="img" className="mr-1" aria-label="announcement">📢  </span> Announcements</span>
             </div>
-            <div className="poll-card m-2" style={{ width: "50px" }}>
-              <span className="p-2">Polls</span>
+            <div className="poll-card m-2" style={{ width: "75px" }}>
+              <span className="p-2"><span role="img" className="mr-1" aria-label="announcement">🔗</span>Links</span>
+            </div>
+            <div className="poll-card m-2" style={{ width: "75px" }}>
+              <span className="p-2"><span role="img" className="mr-1" aria-label="announcement">🗳️</span>Polls</span>
             </div>
           </div>
         </div>
-        <div className="m-4 ann-container">
+        <div className="m-4 mx-n3 ann-container">
           {this.state.announcements.map((announcement) => (
-            <div key={announcement.dateAndTime}>
-              <Announcement
-                announcement={announcement}
-                id={announcement.dateAndTime}
-                onDelete={this.deleteAnnouncement}
-              />
-            </div>
+            <Announcement
+              announcement={announcement}
+              id={announcement.dateAndTime}
+              key={announcement.dateAndTime}
+              onDelete={this.deleteAnnouncement}
+            />
           ))}
         </div>
         {/* list of subjects */}
-        <div id="subjects">
+        <div id="Subjects">
           <h2 className="subHeading">Subjects You study:</h2>
         </div>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
@@ -182,14 +186,18 @@ class MainPage extends Component {
           ))}
         </div>
         {/* semester details */}
-        <div id="details">
+        <div id="Semester">
           <h2 className="subHeading">Semester Details: </h2>
         </div>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
         <Details details={this.state.details} onEdit={this.handleDetailsEdit} />
-        <BottomNav />{" "}
+        <BottomNav 
+          paths={["Lectures", "Announcements", "Subjects", "Semester"]}
+        />
       </div>
-    );
+
+    )
+    return display;
   }
   // Sort Announcements
   sortAnnouncements = () => {
@@ -215,26 +223,27 @@ class MainPage extends Component {
     const teachClass = {
       details: {
         course: this.state.details.course,
-      branch: this.state.details.branch,
-      sem: this.state.details.sem,
-      crName: this.state.details.crName
-      },      
+        branch: this.state.details.branch,
+        sem: this.state.details.sem,
+        crName: this.state.details.crName,
+        classId: classId
+      },
       subjects: [{
         name: addSubject.subject,
         code: addSubject.subjectCode
       }]
     }
-    const { subject, subjectCode, teacher } = addSubject;
-    const newSubject = { subject, subjectCode, teacher }
+    const { subject, subjectCode, teacher, teacherId } = addSubject;
+    const newSubject = { subject, subjectCode, teacher, teacherId }
     this.docRef.update({
       subjects: firebase.firestore.FieldValue.arrayUnion(newSubject)
     });
 
-    db.runTransaction((trans) => {      
+    db.runTransaction((trans) => {
       return trans.get(teachClassRef).then((doc) => {
-        if(doc.exists){
-          trans.update(teachClassRef, {subjects: firebase.firestore.FieldValue.arrayUnion(teachClass.subjects[0])});
-        } else{
+        if (doc.exists) {
+          trans.update(teachClassRef, { subjects: firebase.firestore.FieldValue.arrayUnion(teachClass.subjects[0]) });
+        } else {
           teachClassRef.set(teachClass)
         }
       })
@@ -267,17 +276,29 @@ class MainPage extends Component {
     });
   };
 
-  deleteSubject = (subjectCode) => {
+  deleteSubject = (subject) => {
+    const teachClassRef = db.collection("teachers").doc(subject.teacherId).collection("classes").doc(this.state.crCode);
     this.docRef.update({
-      subjects: this.state.subjects.filter((s) => s.subjectCode !== subjectCode),
+      subjects: this.state.subjects.filter((s) => s.subjectCode !== subject.subjectCode),
     });
+    const remSub = {
+      code: subject.subjectCode,
+      name: subject.subject
+    }
+    db.runTransaction((trans) => {
+      return trans.get(teachClassRef).then((doc) => {
+        if (doc.data().subjects.length === 1) {
+          trans.delete(teachClassRef);
+        } else {
+          trans.update(teachClassRef, { subjects: firebase.firestore.FieldValue.arrayRemove(remSub) });
+        }
+      })
+    })
   };
 
-  deleteLecture = (link, startTime) => {
+  deleteLecture = (lecture) => {
     this.docRefLec.update({
-      lectures: this.state.lecturesToday.filter(
-        (l) => l.link !== link && l.startTime !== startTime
-      ),
+      lectures: firebase.firestore.FieldValue.arrayRemove(lecture)
     });
   };
 }

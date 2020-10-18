@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import firebase from "../firebase";
+import Modal from 'react-bootstrap/Modal';
+
 class AddAnnouncement extends Component {
   state = {
     show: false,
@@ -37,15 +39,18 @@ class AddAnnouncement extends Component {
         <button className="btn-lg btn-info m-1" onClick={this.showModal}>
           Add Announcement
         </button>
-        <div className={this.showHideClassName()}>
-          <section className="" style={this.styles}>
-            <h3 className="mt-2">Add Announcement Details:</h3>
+        <Modal
+          show={this.state.show}
+          onHide={this.hideModal}
+          dialogClassName="modal-dialog-scrollable modal-lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title><h3 className="mt-2">Add Announcement Details:</h3></Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
             <form onSubmit={this.callAddAnnouncement}>{this.getForm()}</form>
-            <button className="btn-info btn mb-2" onClick={this.hideModal}>
-              Close
-            </button>
-          </section>
-        </div>
+          </Modal.Body>
+        </Modal>
       </div>
     );
   }
@@ -67,15 +72,15 @@ class AddAnnouncement extends Component {
             onChange={this.handleChange}
             name="text"
             required
-          />          
+          />
         </div>
         <div className="input-group custom-control custom-switch">
-          <input 
-          type="checkbox" 
-          className="custom-control-input" 
-          id="announcementIsOfficial"
-          name="isOfficial"
-          onChange={(e) => this.setState({isOfficial: e.target.checked})}
+          <input
+            type="checkbox"
+            className="custom-control-input"
+            id="announcementIsOfficial"
+            name="isOfficial"
+            onChange={(e) => this.setState({ isOfficial: e.target.checked })}
           />
           <label className="m-2 mb-0 custom-control-label" style={{ fontSize: "18px" }} htmlFor="announcementIsOfficial">
             Official
@@ -87,7 +92,7 @@ class AddAnnouncement extends Component {
           onClick={this.hideModal}
         >
           Add
-        </button>
+        </button>        
       </div>
     );
   };

@@ -7,6 +7,7 @@ import BottomNav from "../BottomNav/bnav";
 import firebase from "../firebase";
 import "./assets/css/mainPage.css";
 import Loader from "../Loader/Loader";
+import DarkToggle from "../DarkToggle";
 
 // reference to firestore
 const db = firebase.firestore();
@@ -27,15 +28,17 @@ class MainPage extends Component {
   };
 
   // extracting data from db
-  componentDidMount() { 
+  componentDidMount() {
     // console.log(db.collection("classes"));
     this.docRef.onSnapshot((doc) => {
       if (doc.data()) {
-        setTimeout(()=>{this.setState({
-          subjects: doc.data().subjects.map((subject) => { return { ...subject } }),
-          details: doc.data().details,
-          loading: false,
-        })}, 2000);
+        setTimeout(() => {
+          this.setState({
+            subjects: doc.data().subjects.map((subject) => { return { ...subject } }),
+            details: doc.data().details,
+            loading: false,
+          })
+        }, 2000);
       }
     });
     this.docRefLec.onSnapshot((doc) => {
@@ -62,9 +65,10 @@ class MainPage extends Component {
       window.location.pathname = "/";
     };
     var display = <Loader />
-    display =  this.state.loading ? <Loader /> :  (
+    display = this.state.loading ? <Loader /> : (
       <div className="container-fluid">
         <div>
+          <DarkToggle />          
           <button
             onClick={() => logout()}
             className="btn btn-sm float-md-right btn-dark mb-2"
@@ -72,9 +76,8 @@ class MainPage extends Component {
             Logout
     </button>
           <h1 className="mainPageHeading">Welcome!</h1>
-
           {/* lectures on the day */}
-          <div id="lectures">
+          <div id="Lectures">
             <h2 className="subHeading">Lectures Today:</h2>
           </div>
           <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
@@ -86,38 +89,38 @@ class MainPage extends Component {
           </div>
 
           {/* Announcement/polls/links */}
-          <div id="announcements">
+          <div id="Announcements">
             <div className="d-inline container-fluid">
               <h2 className="subHeading">Mitron! Announcement Suno <span role="img" aria-label="announcement">📢</span></h2>
               <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
             </div>
             <div className="key-container">
-              <h5 className="m-2" style={{ textDecoration: "underline" }}>
-                Key
-        </h5>
-              <div className="announcement-card m-2" style={{ width: "120px" }}>
-                <span className="p-2">Announcements</span>
+              <div className="poll-card m-2" style={{ width: "90px" }}>
+                <span className="p-2"><i className="fa fa-bookmark text-danger mr-1" /> Official</span>
               </div>
-              <div className="link-card m-2" style={{ width: "50px" }}>
-                <span className="p-2">Links</span>
+              <div className="poll-card m-2" style={{ width: "150px" }}>
+                <span className="p-2"><span role="img" className="mr-1" aria-label="announcement">📢  </span> Announcements</span>
               </div>
-              <div className="poll-card m-2" style={{ width: "50px" }}>
-                <span className="p-2">Polls</span>
+              <div className="poll-card m-2" style={{ width: "75px" }}>
+                <span className="p-2"><span role="img" className="mr-1" aria-label="announcement">🔗</span>Links</span>
+              </div>
+              <div className="poll-card m-2" style={{ width: "75px" }}>
+                <span className="p-2"><span role="img" className="mr-1" aria-label="announcement">🗳️</span>Polls</span>
               </div>
             </div>
           </div>
-          <div className="m-4 ann-container">
+          <div className="m-4 mx-n3 ann-container">
             {this.state.announcements.map((announcement) => (
-                <Announcement
-                  key={announcement.dateAndTime}
-                  announcement={announcement}                  
-                  id={announcement.dateAndTime}
-                />
+              <Announcement
+                key={announcement.dateAndTime}
+                announcement={announcement}
+                id={announcement.dateAndTime}
+              />
             ))}
           </div>
 
           {/* list of subjects */}
-          <div id="subjects">
+          <div id="Subjects">
             <h2 className="subHeading">Subjects You study:</h2>
           </div>
           <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
@@ -129,13 +132,15 @@ class MainPage extends Component {
           </div>
 
           {/* semester details */}
-          <div id="details">
+          <div id="Semester">
             <h2 className="subHeading">Semester Details: </h2>
           </div>
           <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
           <Details details={this.state.details} />
 
-          <BottomNav />
+          <BottomNav
+            paths={["Lectures", "Announcements", "Subjects", "Semester"]}
+          />
         </div>
       </div>
     )

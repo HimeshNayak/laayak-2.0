@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import Modal from 'react-bootstrap/Modal';
 import firebase from "../firebase";
 
 // reference to firestore
@@ -46,16 +46,18 @@ class AddSubject extends Component {
         <button className="btn btn-info btn-lg mb-4" onClick={this.showModal}>
           New Subject +
         </button>
-
-        <div className={this.showHideClassName()}>
-          <section className="" style={this.styles}>
-            <h3 className="mt-2">Add Subject Details:</h3>
-            <form onSubmit={this.callAddSubject}>{this.getForm()}</form>
-            <button className="btn-info btn mb-2" onClick={this.hideModal}>
-              Close
-            </button>
-          </section>
-        </div>
+        <Modal
+          show={this.state.show}
+          onHide={this.hideModal}
+          dialogClassName="modal-dialog-scrollable modal-lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title><h3 className="mt-2">Add Subject Details:</h3></Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+          <form onSubmit={this.callAddSubject}>{this.getForm()}</form>
+          </Modal.Body>
+        </Modal>        
       </div>
     );
   }
@@ -125,23 +127,6 @@ class AddSubject extends Component {
     this.setState({ [nam]: val });
   };
 
-  // fetchSubject = (event) => {    
-  //   this.handleChange(event)
-  //   let code = event.target.value;
-  //   if(code){
-  //   const foundSubject = this.state.subjects.find((sub) => {
-  //     return sub.subjectCode === code
-  //   })
-  //   if(foundSubject){
-  //     this.setState({
-  //       subject: foundSubject.subjectName,
-  //       sdisabled: true
-  //     })
-  //   } else {
-  //     this.setState({ subject: "", sdisabled: false })
-  //   }
-  // }
-  // }
   fetchTeacher = (event) => {
     this.handleChange(event)
     let id = event.target.value;

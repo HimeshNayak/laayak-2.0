@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import firebase from "../firebase";
+import Modal from 'react-bootstrap/Modal';
+
 class AddAnnouncement extends Component {
   state = {
     show: false,
@@ -37,15 +39,18 @@ class AddAnnouncement extends Component {
         <button className="btn-lg btn-info m-1" onClick={this.showModal}>
           Add Announcement
         </button>
-        <div className={this.showHideClassName()}>
-          <section className="" style={this.styles}>
-            <h3 className="mt-2">Add Announcement Details:</h3>
+        <Modal
+          show={this.state.show}
+          onHide={this.hideModal}
+          dialogClassName="modal-dialog-scrollable modal-lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title><h3 className="mt-2">Add Announcement Details:</h3></Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
             <form onSubmit={this.callAddAnnouncement}>{this.getForm()}</form>
-            <button className="btn-info btn mb-2" onClick={this.hideModal}>
-              Close
-            </button>
-          </section>
-        </div>
+          </Modal.Body>
+        </Modal>
       </div>
     );
   }

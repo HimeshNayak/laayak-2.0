@@ -6,6 +6,7 @@ import AddPoll from "./AddPoll";
 import AddLink from "./AddLink";
 import firebase from "../firebase";
 import { Link } from 'react-router-dom';
+import BottomNav from '../BottomNav/bnav';
 let db = firebase.firestore();
 
 
@@ -64,12 +65,12 @@ class classDetails extends Component {
           </Link>
         </div>
         {/* semester details */}
-        <h2 className="subHeading">Info: </h2>
+        <h2 id="Details" className="subHeading">Info: </h2>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
 
         <Details details={this.state.details} onEdit={this.handleDetailsEdit} />
         {/* Announcement/polls/links */}
-        <div id="announcements">
+        <div id="Announcements">
           <div className="d-inline container-fluid">
             <h2 className="subHeading">Manage Announcements <span role="img" aria-label="announcement">📢</span></h2>
             <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
@@ -85,27 +86,29 @@ class classDetails extends Component {
             <h5 className="m-2" style={{ textDecoration: "underline" }}>
               Key
             </h5>
-            <div className="announcement-card m-2" style={{ width: "120px" }}>
-              <span className="p-2">Announcements</span>
+            <div className="poll-card m-2" style={{ width: "150px" }}>
+              <span className="p-2"><span role="img" className="mr-1" aria-label="announcement">📢  </span> Announcements</span>
             </div>
-            <div className="link-card m-2" style={{ width: "50px" }}>
-              <span className="p-2">Links</span>
+            <div className="poll-card m-2" style={{ width: "75px" }}>
+              <span className="p-2"><span role="img" className="mr-1" aria-label="announcement">🔗</span>Links</span>
             </div>
-            <div className="poll-card m-2" style={{ width: "50px" }}>
-              <span className="p-2">Polls</span>
+            <div className="poll-card m-2" style={{ width: "75px" }}>
+              <span className="p-2"><span role="img" className="mr-1" aria-label="announcement">🗳️</span>Polls</span>
             </div>
           </div>
         </div>
-        <div className="m-4 ann-container">
+        <div className="m-4 mx-n3 ann-container">
           {this.state.announcements.map((announcement) => (
-            <div key={announcement.dateAndTime}>
               <Announcement
+              key={announcement.dateAndTime}
                 announcement={announcement}
                 onDelete={this.deleteAnnouncement}
               />
-            </div>
           ))}
         </div>
+        <BottomNav
+          paths={["Details", "Announcements"]}
+        />
       </div>
 
     );
@@ -125,7 +128,7 @@ class classDetails extends Component {
       announcements: temp,
     });
   };
-  AddAnnouncement = (newAnnouncement) => {    
+  AddAnnouncement = (newAnnouncement) => {
     this.docRefUp.update({
       announcements: firebase.firestore.FieldValue.arrayUnion(newAnnouncement),
     });
@@ -135,7 +138,7 @@ class classDetails extends Component {
   };
   deleteAnnouncement = (announcement) => {
     this.docRefUp.update({
-      announcements: firebase.firestore.FieldValue.arrayRemove(announcement),      
+      announcements: firebase.firestore.FieldValue.arrayRemove(announcement),
     });
     this.setState({
       announcements: []

@@ -5,10 +5,14 @@
 }
 
 nav {
-  background-color: purple;
+  background-color: #d4cece;
   height: 8vh;
   font-size: 2.3vh;
   display: flex;
+}
+
+.dark nav {
+  background-color: #24292b;
 }
 
 .brand {
@@ -20,7 +24,7 @@ nav {
 }
 
 .brand li {
-  color: white;
+  color: #000000;
   font-size: 4vh;
   list-style: none;
   transition: all 0.3s ease;
@@ -28,6 +32,10 @@ nav {
   position: absolute;
   left: 70px;
   z-index: 2;
+}
+
+.dark .brand li {
+  color: #ffffff;
 }
 
 .brand li:hover {
@@ -58,11 +66,15 @@ nav {
 }
 
 .nav-link {
-  color: white;
+  color: #000000;
   text-transform: uppercase;
   letter-spacing: 2px;
   opacity: 0.7;
   transition: 0.3s ease;
+}
+
+.dark .nav-link {
+  color: #ffffff;
 }
 
 .nav-link:hover {
@@ -79,7 +91,7 @@ nav {
 
   .nav-links {
     position: absolute;
-    background-color: purple;
+    background-color: #d4cece;
     width: 100%;
     height: 100vh;
     flex-direction: column;
@@ -87,6 +99,10 @@ nav {
     -webkit-clip-path: circle(100px at 100% -15%);
     transition: all 1s ease-in-out;
     pointer-events: none;
+  }
+
+  .dark .nav-links {
+    background-color: #24292b;
   }
 
   .nav-links.open {
@@ -98,7 +114,7 @@ nav {
     font-size: 3.5vh;
   }
   .hamburger {
-    border: 1px solid rgb(235, 235, 235);
+    border: 1px solid #000000;
     border-radius: 15% 15%;
     cursor: pointer;
     position: absolute;
@@ -112,6 +128,6 @@ nav {
     height: 3px;
     width: 30px;
     margin: 5px;
-    background-color: rgb(235, 235, 235);
+    background-color: #000000;
   }
 }

@@ -15,6 +15,7 @@ import NewTeacher from "./Teacher/NewTeacher";
 import ClassDetails from "./Teacher/ClassDetails";
 
 function App() {
+  document.getElementsByTagName("body")[0].classList.add(localStorage.getItem("mode"));
   return (
     <div className="App">
       <Router>

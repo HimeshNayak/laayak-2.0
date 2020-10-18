@@ -5,13 +5,16 @@ import MainPage from "./mainPage";
 const db = firebase.firestore();
 
 class StuLanding extends Component {
+  isMount=false;
   state = {
     studentCode: "",
     rightCode: false,
   };
 
-  componentDidMount() {    
+  componentDidMount() {  
+    this.isMount = true;  
     var code;
+    if(this.isMount) {
     if((code = this.props.match.params.code)){
       this.setState({
       studentCode: code,      
@@ -25,6 +28,11 @@ class StuLanding extends Component {
         rightCode: true,
       });
     }
+  }
+  }
+
+  componentWillMount() {
+    this.isMount = false;
   }
 
   handleChange = (e) => {
