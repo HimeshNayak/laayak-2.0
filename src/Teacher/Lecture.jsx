@@ -41,7 +41,7 @@ class Lecture extends Component {
     let endMin = endMins < 10 ? ("0" + String(endMins)) : String(endMins);
     return (
       <div className="container">
-        <div className="lec lec-hover" id="lec">
+        <div className="lec lec-hover" id={startTime+link}>
           <div className="lec-preview">
             <div className="time" style={{height: "148px"}}>
               <h3>{startHour} : {startMin} {startAmPm}</h3>
@@ -76,7 +76,7 @@ class Lecture extends Component {
                 more="More"
                 less="Less"
                 anchorClass=""
-                onClick={(e) => document.getElementById("lec").classList.toggle("lec-hover")}
+                onClick={() => document.getElementById(startTime+link).classList.toggle("lec-hover")}
                 expanded={false}>
                 {text ? text : "No Info Provided"}
               </ShowMoreText>

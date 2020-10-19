@@ -72,6 +72,11 @@ body {
   margin-top: 20vh;
 }
 
+.home-emoji {
+  font-size: 100px;
+  cursor: pointer;
+}
+
 .about-content {
   margin: 0 auto;
   width: 80%;

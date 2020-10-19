@@ -1,11 +1,7 @@
 import React, { Component } from "react";
 import "./assets/css/home.css";
-import MainPage from "./StuComponents/mainPage";
 
 class Home extends Component {
-  state = {
-    studentCode: "",
-  };
   imageStyle = {
     width: "35vw",
     minWidth: "300px",
@@ -38,12 +34,7 @@ class Home extends Component {
   };
 
   render() {
-    const display = this.state.studentCode ? (
-      <MainPage studentCode={this.state.studentCode} />
-    ) : (
-      this.getHomePage()
-    );
-    return display;
+    return this.getHomePage()
   }
 }
 

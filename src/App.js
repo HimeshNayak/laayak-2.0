@@ -13,6 +13,7 @@ import TeacherDetails from "./Teacher/AfterSignup";
 import Landing from "./Teacher/Landing";
 import NewTeacher from "./Teacher/NewTeacher";
 import ClassDetails from "./Teacher/ClassDetails";
+import classDetails from "./CrComponents/ClassDetails";
 
 function App() {
   document.getElementsByTagName("body")[0].classList.add(localStorage.getItem("mode"));
@@ -26,6 +27,7 @@ function App() {
           <Route path="/newcr" exact component={NewCr} />
           <Route path="/newcr/details" exact component={CrDetails} />
           <Route path="/cr" exact component={CrLanding} />
+          <Route path="/cr/class" exact component={classDetails} />
           <Route path="/teacher" exact component={Landing} />
           <Route path="/teacher/class" exact component={ClassDetails} />
           <Route path="/newteacher" exact component={NewTeacher} />

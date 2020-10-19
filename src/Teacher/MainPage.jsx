@@ -6,6 +6,7 @@ import AddLecture from "./AddLecture";
 import Loader from "../Loader/Loader";
 import firebase from "../firebase";
 import BottomNav from "../BottomNav/bnav";
+import DarkToggle from "../DarkToggle/DarkToggle"
 
 // reference to firestore
 
@@ -42,7 +43,6 @@ class MainPage extends Component {
   componentDidMount() {
     // only data fetch
     this.isMount = true;
-    setTimeout(() => {
       this.teachRef.onSnapshot((teacher) => {
         if (this.isMount) {
           this.setState({
@@ -72,8 +72,7 @@ class MainPage extends Component {
             }
           })
         })
-      })      
-    }, 2000)
+      })
   }
 
   componentWillMount() {
@@ -85,13 +84,15 @@ class MainPage extends Component {
       <div className="container-fluid">
         <div className="code-head-btn">
           {/* signout btn */}
-
+          <DarkToggle />
           <h1 className="mainPageHeading mx-auto" style={{ marginTop: "-3vh" }}>
             Teacher Control Center!
           </h1>
-          <button className="btn btn-danger" onClick={this.handleSignOut}>
-            Sign Out
-          </button>
+          <i
+            style={{ fontSize: "30px", cursor: "pointer" }}
+            onClick={this.handleSignOut}
+            className="float-md-right mb-2 fa fa-sign-out"
+          />
         </div>
         <h2 id="Details" className="subHeading">Your Details: </h2>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
@@ -119,11 +120,11 @@ class MainPage extends Component {
         <h2 id="Classes" className="subHeading">Classes You Teach:</h2>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
         <div className="my-flex-container">
-          {this.state.classesTeaching.map((classTeaching) => (            
-              <Class
+          {this.state.classesTeaching.map((classTeaching) => (
+            <Class
               key={classTeaching.details.classId}
-              class={classTeaching}              
-            />           
+              class={classTeaching}
+            />
           ))}
         </div>
         <BottomNav

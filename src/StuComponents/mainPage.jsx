@@ -7,7 +7,7 @@ import BottomNav from "../BottomNav/bnav";
 import firebase from "../firebase";
 import "./assets/css/mainPage.css";
 import Loader from "../Loader/Loader";
-import DarkToggle from "../DarkToggle";
+import DarkToggle from "../DarkToggle/DarkToggle";
 
 // reference to firestore
 const db = firebase.firestore();
@@ -68,13 +68,12 @@ class MainPage extends Component {
     display = this.state.loading ? <Loader /> : (
       <div className="container-fluid">
         <div>
-          <DarkToggle />          
-          <button
-            onClick={() => logout()}
-            className="btn btn-sm float-md-right btn-dark mb-2"
-          >
-            Logout
-    </button>
+          <DarkToggle />
+          <i 
+          style ={{ fontSize: "30px", cursor:"pointer" }}
+          onClick={() => logout()}
+          className="float-md-right mb-2 fa fa-sign-out"
+          />
           <h1 className="mainPageHeading">Welcome!</h1>
           {/* lectures on the day */}
           <div id="Lectures">

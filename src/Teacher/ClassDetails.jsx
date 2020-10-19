@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Details from "../CrComponents/details";
+import Details from "../StuComponents/details";
 import Announcement from "./Announcement";
 import Announce from "./Announce";
 import AddPoll from "./AddPoll";
@@ -7,6 +7,7 @@ import AddLink from "./AddLink";
 import firebase from "../firebase";
 import { Link } from 'react-router-dom';
 import BottomNav from '../BottomNav/bnav';
+import DarkToggle from "../DarkToggle/DarkToggle"
 let db = firebase.firestore();
 
 
@@ -56,8 +57,8 @@ class classDetails extends Component {
     return (
       <div className="container-fluid">
         <div className="code-head-btn">
-
-          <h1 className="mainPageHeading mx-auto" style={{ marginTop: "-3vh" }}>
+          <DarkToggle />
+          <h1 className="mainPageHeading" style={{ marginTop: "-3vh" }}>
             Class Details
           </h1>
           <Link className="btn btn-info mr-2 ml-n5" to="/teacher">

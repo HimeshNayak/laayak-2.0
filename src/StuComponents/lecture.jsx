@@ -41,7 +41,7 @@ class Lecture extends Component {
 
     return (
       <div className="container">
-        <div className="lec lec-hover" id="lec">
+        <div className="lec lec-hover" id={startTime+link}>
           <div className="lec-preview">
             <div className="time">
               <h3>{startHour} : {startMin} {startAmPm}</h3>
@@ -75,9 +75,7 @@ class Lecture extends Component {
                 more="More"
                 less="Less"
                 anchorClass=""
-                onClick={(e) => document.getElementById("lec").classList.contains("lec-hover") ?
-                  document.getElementById("lec").classList.remove("lec-hover") :
-                  document.getElementById("lec").classList.add("lec-hover")}
+                onClick={() => document.getElementById(startTime+link).classList.toggle("lec-hover")}
                 expanded={false}>
                 {text ? text : "No Info Provided"}
               </ShowMoreText>

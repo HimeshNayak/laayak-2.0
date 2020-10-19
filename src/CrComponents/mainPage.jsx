@@ -11,6 +11,9 @@ import AddLink from "./addLink";
 import firebase from "../firebase";
 import BottomNav from "../BottomNav/bnav";
 import Loader from "../Loader/Loader";
+import DarkToggle from "../DarkToggle/DarkToggle";
+import { Dropdown } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 // reference to firestore
 
@@ -49,7 +52,6 @@ class MainPage extends Component {
 
   // extracting data from db
   componentDidMount() {
-    setTimeout(() => {
       this.docRef.onSnapshot((doc) => {
         if (doc.data()) {
           this.setState({
@@ -61,7 +63,6 @@ class MainPage extends Component {
           });
         }
       });
-    }, 2000);
     this.docRefLec.onSnapshot((doc) => {
       if (doc.data()) {
         this.setState({
@@ -84,32 +85,50 @@ class MainPage extends Component {
   }
 
   copyLink = () => {
-    const link = "localhost:3000/student/" + this.state.crCode;
+    const Code = this.state.crCode;
     const el = document.createElement("textarea");
-    el.innerText = link;
+    el.innerText = Code;
     document.body.appendChild(el);
     el.select();
     document.execCommand("copy");
     document.body.removeChild(el);
-    alert("Invite link copied!");
+    alert("Code copied!");
   };
 
   render() {
     const display = this.state.loading ? <Loader /> : (
       <div className="container-fluid">
         <div className="code-head-btn">
-          {/* <h5>Code: {this.state.crCode}</h5> */}
-          <button className="btn btn-info" onClick={this.copyLink}>
-            Invite Students
-          </button>
-          {/* signout btn */}
-
+          <DarkToggle />
           <h1 className="mainPageHeading" style={{ marginTop: "-3vh" }}>
             CR Control Page!
           </h1>
-          <button className="btn btn-danger" onClick={this.handleSignOut}>
-            Sign Out
-          </button>
+          <Dropdown className="float-md-right mb-2">
+            <Dropdown.Toggle className="acc-dropdown" id="dropdown-basic">
+              <i className="fa fa-user-circle" style={{ fontSize: "30px", cursor: "pointer" }} />
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item> {this.state.details.crName} </Dropdown.Item>
+              <Dropdown.Item onClick={this.copyLink}> {this.state.crCode} </Dropdown.Item>
+              <Link to={{
+                pathname: "/cr/class",
+                state: {
+                  classId: this.state.crCode,
+                  details: this.state.details
+                }
+              }}
+                style={{ textDecoration: "none" }}><Dropdown.Item href="/cr/class">Class Details</Dropdown.Item></Link>
+              <Dropdown.Divider />
+              <Dropdown.Item>
+                <i
+                  style={{ fontSize: "25px", cursor: "pointer" }}
+                  onClick={() => this.handleSignOut()}
+                  className="fa fa-sign-out"
+                />
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         </div>
         {/* lectures on the day */}
         <div id="Lectures">
@@ -191,7 +210,7 @@ class MainPage extends Component {
         </div>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
         <Details details={this.state.details} onEdit={this.handleDetailsEdit} />
-        <BottomNav 
+        <BottomNav
           paths={["Lectures", "Announcements", "Subjects", "Semester"]}
         />
       </div>

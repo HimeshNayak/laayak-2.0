@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import firebase from "../firebase";
+import Loader from "../Loader/Loader";
 import CrLogin from "./crLogin";
 import MainPage from "./mainPage";
 
@@ -11,6 +12,7 @@ class CrLanding extends Component {
   state = {
     user: null,
     doc: "",
+    loading: true
   };
 
   authListener = () => {
@@ -43,11 +45,19 @@ class CrLanding extends Component {
   }
 
   render() {
-    return this.state.user && this.state.doc ? (
-      <MainPage CrCode={this.state.doc} />
-    ) : (
-      <CrLogin />
-    );
+    let display;
+    (this.state.loading) && (display = <Loader />)
+    if (!this.state.loading) {
+      this.state.user && this.state.doc ?
+        display = <MainPage CrCode={this.state.doc} /> :
+        display = <CrLogin />
+    }
+    setTimeout(() => {
+      if (this.isMount) {
+        this.setState({ loading: false })
+      }
+    }, 2000)
+    return display;
   }
 }
 export default CrLanding;

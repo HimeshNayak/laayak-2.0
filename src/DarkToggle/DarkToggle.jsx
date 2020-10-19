@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import "./DarkToggle.css"
 
 class DarkToggle extends Component {
     state = {
@@ -6,7 +7,6 @@ class DarkToggle extends Component {
     }
     render() {
         const toggle = () => {
-            // const mode = document.getElementsByTagName("Body")[0].classList[0];
             this.state.mode === "dark" ? localStorage.setItem("mode", "light") : localStorage.setItem("mode", "dark");
             document.getElementsByTagName("Body")[0].classList.replace(this.state.mode, localStorage.getItem("mode"));
             this.setState({
@@ -14,17 +14,16 @@ class DarkToggle extends Component {
             })
         }
         return (
-            <div className="input-group custom-control custom-switch">
-                <input
-                    type="checkbox"
+            <div className="float-md-left w-auto mb-2 input-group custom-control custom-switch">
+                <label id="switch" className="switch">
+                    <input 
+                    type="checkbox" 
                     className="custom-control-input"
                     onChange={toggle}
-                    checked = {this.state.mode === "dark"}
-                    id="dark"
-                />
-                <label className="m-2 mb-0 custom-control-label" style={{ fontSize: "18px" }} htmlFor="dark">
-                    Dark Mode
-          </label>
+                    checked={this.state.mode === "dark"}
+                    id="dark" />
+                    <span className="slider round"></span>
+                </label>                
             </div>
         );
     }
