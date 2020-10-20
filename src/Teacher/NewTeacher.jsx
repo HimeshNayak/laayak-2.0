@@ -43,8 +43,7 @@ class NewTeacher extends Component {
     return this.state.authStatus ? (
       <Redirect to="/newteacher/details" />
     ) : (
-        <div style={{ marginTop: "30vh" }}>
-          <h1>Sign Up</h1>
+        <div>          
           {this.getForm()}
         </div>
       );
@@ -52,44 +51,52 @@ class NewTeacher extends Component {
 
   getForm = () => {
     return (
-      <div className="container">
-        <form>
-          <div className="form-group row">
-            <label className="col-sm-2 col-form-label">Email</label>
-            <div className="col-sm-10">
-              <input
-                type="email"
-                className="form-control"
-                placeholder="email@example.com"
-                value={this.state.email}
-                name="email"
-                onChange={this.handleChange}
-              />
-            </div>
+      <div className="main-container">
+        <div className="container-login mx-auto">
+          <div className="con-login">
+            <h1>Sign Up</h1>
+            <form onSubmit={this.handleSignUp} style={{ width: "100%" }}>
+              <div className="con-inputs mt-4">
+                <div className="con-input">
+                  <label htmlFor="email">
+                    Email
+                        </label>
+                  <input
+                    placeholder="email@example.com"
+                    id="email"
+                    name="email"
+                    value={this.state.email}
+                    type="text"
+                    onChange={this.handleChange}
+                    required
+                  />
+                </div>
+                <div className="con-input">
+                  <label htmlFor="password">
+                    Password
+                        </label>
+                  <input
+                    placeholder="Password"
+                    id="password"
+                    name="password"
+                    value={this.state.password}
+                    type="password"
+                    onChange={this.handleChange}
+                    required
+                  />
+                </div>
+                <div className="con-new">
+                  Already registered? <Link to="/teacher">Log In</Link>
+                </div>
+              </div>
+              <footer>
+                <button type="submit" className="btn-login">
+                  Register
+                </button>
+              </footer>
+            </form>
           </div>
-          <div className="form-group row">
-            <label className="col-sm-2 col-form-label">Password</label>
-            <div className="col-sm-10">
-              <input
-                type="password"
-                className="form-control"
-                value={this.state.password}
-                name="password"
-                onChange={this.handleChange}
-              />
-            </div>
-          </div>
-
-          <button className="btn btn-info" onClick={this.handleSignUp}>
-            Sign Up
-          </button>
-        </form>
-        <p className="text-small">
-          <span>Existing User?  </span>
-          <Link to="/teacher" style={{ color: "#092592", textDecoration: "none" }}>
-            Sign In
-          </Link>
-        </p>
+        </div>
       </div>
     );
   };

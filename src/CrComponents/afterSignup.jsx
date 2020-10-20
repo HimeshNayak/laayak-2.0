@@ -103,8 +103,7 @@ class AfterSignup extends Component {
       return <Redirect to="/cr" />;
     } else {
       return (
-        <div className="d-flex flex-column align-items-center">
-          <h1>Fill in the important information please</h1>
+        <div>
           {this.getDetails()}
         </div>
       );
@@ -118,78 +117,92 @@ class AfterSignup extends Component {
 
   getDetails = () => {
     return (
-      <form onSubmit={this.handleSubmitDetails} className="col-sm-5 text-left">
-        <legend>General Details:</legend>
-        <div className="form-group">
-          <label>Username:</label>
-          <input
-            type="text"
-            name="crName"
-            id="crName"
-            value={this.state.details["crName"]}
-            class="form-control"
-            placeholder="username"
-            onChange={this.handleChange}
-            required
-          />
+      <div className="main-container">
+        <div className="container-login mx-auto">
+          <div className="con-login">
+            <h1>Sign Up</h1>
+            <form onSubmit={this.handleSubmitDetails} style={{ width: "100%" }}>
+              <div className="con-inputs mt-4">
+                <div className="con-input">
+                  <label htmlFor="crName">
+                    Username
+                  </label>
+                  <input
+                    placeholder="Username"
+                    id="crName"
+                    name="crName"
+                    value={this.state.details["crName"]}
+                    type="text"
+                    onChange={this.handleChange}
+                    required
+                  />
+                </div>
+                <div className="con-input">
+                  <label htmlFor="course">
+                    Course
+                  </label>
+                  <input
+                    placeholder="Eg. BTech"
+                    id="course"
+                    name="course"
+                    value={this.state.details["course"]}
+                    type="text"
+                    onChange={this.handleChange}
+                    required
+                  />
+                </div>
+                <div className="con-input">
+                  <label htmlFor="branch">
+                    Branch
+                  </label>
+                  <input
+                    placeholder="Eg. CSE"
+                    id="branch"
+                    name="branch"
+                    value={this.state.details["branch"]}
+                    type="text"
+                    onChange={this.handleChange}
+                    required
+                  />
+                </div>
+                <div className="con-input">
+                  <label htmlFor="sem">
+                    Semester
+                  </label>
+                  <input
+                    placeholder="Semester"
+                    id="sem"
+                    name="sem"
+                    value={this.state.details["sem"]}
+                    type="text"
+                    onChange={this.handleChange}
+                    required
+                  />
+                </div>
+                <div className="con-input">
+                  <label htmlFor="college">
+                    College Name
+                  </label>
+                  <input
+                    placeholder="College Name"
+                    id="college"
+                    name="college"
+                    value={this.state.details["college"]}
+                    type="text"
+                    onChange={this.handleChange}
+                    required
+                  />
+                </div>
+              </div>
+              <footer>
+                <button type="submit" className="btn-login">
+                  Submit
+                </button>
+              </footer>
+            </form>
+          </div>
         </div>
-        <div className="form-group">
-          <label>Course:</label>
-          <input
-            type="text"
-            name="course"
-            id="course"
-            value={this.state.details["course"]}
-            class="form-control"
-            placeholder="eg. btech"
-            onChange={this.handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Branch:</label>
-          <input
-            type="text"
-            name="branch"
-            id="branch"
-            value={this.state.details["branch"]}
-            class="form-control"
-            placeholder="eg. Computer Science Engineering"
-            onChange={this.handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Sem:</label>
-          <input
-            type="text"
-            name="sem"
-            id="sem"
-            value={this.state.details["sem"]}
-            onChange={this.handleChange}
-            class="form-control"
-            placeholder="eg. 3rd"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>College:</label>
-          <input
-            type="text"
-            name="college"
-            id="college"
-            value={this.state.details["college"]}
-            class="form-control"
-            placeholder="college name"
-            onChange={this.handleChange}
-            required
-          />
-        </div>
-
-        <button type="submit" className="btn btn-info">
-          Submit
-        </button>
-      </form>
+      </div>
     );
   };
 

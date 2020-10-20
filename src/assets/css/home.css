@@ -1,30 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Acme&display=swap");
 body {
-  /* background: #800080;  */
-  /*fallback for old browsers*/
-  /* background: -webkit-linear-gradient(
-    to bottom,
-    #ffc0cb,
-    #800080
-  );  */
-  /* Chrome 10-25, Safari 5.1-6*/
-  /* background: linear-gradient(
-    to bottom,
-    #ffc0cb,
-    #800080
-  ); */
-   /*W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-
-  /* background: #fad0c47d; */
-  /*fallback for old browsers*/
-  /* background: -webkit-linear-gradient(315deg, #fad0c4 0%, #f1a7f1 74%);  */
-  /* Chrome 10-25, Safari 5.1-6*/
-  /* background: linear-gradient(315deg, #fad0c4 0%, #f1a7f1 74%); */
-  /*W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-
   background: rgba(119,161,211,1);
   /*fallback for old browsers*/
   background: -webkit-linear-gradient( 109.6deg,  rgba(121,203,202,1) 11.2%, rgba(119,161,211,1) 91.1% );
@@ -45,11 +21,11 @@ body {
 }
 
 .dark {
-  background: rgba(0,0,0,0.15);
+  /* background: #5b6467; */
   /*fallback for old browsers*/
-  background: -webkit-linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.15) 100%), -webkit-radial-gradient(at top center, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.40) 120%) #989898;
+  background-image: -webkit-linear-gradient(315deg, #5b6467 0%, #8b939a 74%);
   /* Chrome 10-25, Safari 5.1-6*/
-  background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.15) 100%), radial-gradient(at top center, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.40) 120%) #989898
+  background-image: linear-gradient(315deg, #5b6467 0%, #8b939a 74%);
   /*W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */  
 }
 

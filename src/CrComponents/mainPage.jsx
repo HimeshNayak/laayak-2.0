@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Details from "./details";
 import Subject from "./subject";
 import Lecture from "./lecture";
 import Announcement from "./announcement";
@@ -120,10 +119,9 @@ class MainPage extends Component {
               }}
                 style={{ textDecoration: "none" }}><Dropdown.Item href="/cr/class">Class Details</Dropdown.Item></Link>
               <Dropdown.Divider />
-              <Dropdown.Item>
+              <Dropdown.Item onClick={() => this.handleSignOut()}>
                 <i
-                  style={{ fontSize: "25px", cursor: "pointer" }}
-                  onClick={() => this.handleSignOut()}
+                  style={{ fontSize: "25px", cursor: "pointer" }}                  
                   className="fa fa-sign-out"
                 />
               </Dropdown.Item>
@@ -203,15 +201,9 @@ class MainPage extends Component {
               onDelete={this.deleteSubject}
             />
           ))}
-        </div>
-        {/* semester details */}
-        <div id="Semester">
-          <h2 className="subHeading">Semester Details: </h2>
-        </div>
-        <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
-        <Details details={this.state.details} onEdit={this.handleDetailsEdit} />
+        </div>        
         <BottomNav
-          paths={["Lectures", "Announcements", "Subjects", "Semester"]}
+          paths={["Lectures", "Announcements", "Subjects"]}
         />
       </div>
 

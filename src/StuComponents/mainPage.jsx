@@ -5,7 +5,6 @@ import Lecture from "./lecture";
 import Announcement from "./announcement";
 import BottomNav from "../BottomNav/bnav";
 import firebase from "../firebase";
-import "./assets/css/mainPage.css";
 import Loader from "../Loader/Loader";
 import DarkToggle from "../DarkToggle/DarkToggle";
 

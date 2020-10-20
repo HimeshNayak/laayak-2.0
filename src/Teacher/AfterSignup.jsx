@@ -63,7 +63,7 @@ class AfterSignup extends Component {
 
     componentWillMount() {
         this.isMount = false;
-      }
+    }
 
     addDoc = () => {
         console.log("doc add");
@@ -90,8 +90,7 @@ class AfterSignup extends Component {
             return <Redirect to="/teacher" />;
         } else {
             return (
-                <div className="d-flex flex-column align-items-center">     
-                    <h1>Fill in the important information please</h1>               
+                <div>
                     {this.getDetails()}
                 </div>
             );
@@ -100,53 +99,57 @@ class AfterSignup extends Component {
 
     getDetails = () => {
         return (
-            <form onSubmit={this.handleSubmitDetails} className="col-sm-5 mt-4 text-left">                
-                {/* <h1 className="mt-2">General Details:</h1> */}
-                <div className="form-group">
-                    <label>Full Name:</label>
-                    <input
-                        type="text"
-                        name="name"
-                        id="name"
-                        value={this.state.details["name"]}
-                        class="form-control"
-                        placeholder="First Name "
-                        onChange={this.handleDetailsChange}
-                        required
-                    />
+            <div className="main-container">
+                <div className="container-login mx-auto">
+                    <div className="con-login">
+                        <h1>Sign Up</h1>
+                        <form onSubmit={this.handleSubmitDetails} style={{ width: "100%" }}>
+                            <div className="con-inputs mt-4">
+                                <div className="con-input">
+                                    <label htmlFor="name">
+                                        Full Name
+                                    </label>
+                                    <input
+                                        placeholder="Full Name"
+                                        id="name"
+                                        name="name"
+                                        value={this.state.details["name"]}
+                                        type="text"
+                                        onChange={this.handleDetailsChange}
+                                        required
+                                    />
+                                </div>
+                                <div className="con-input">
+                                    <label htmlFor="college">
+                                        College Name
+                                    </label>
+                                    <input
+                                        placeholder="College Name"
+                                        id="college"
+                                        name="college"
+                                        value={this.state.details["college"]}
+                                        type="text"
+                                        onChange={this.handleDetailsChange}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                            <footer>
+                                <button type="submit" className="btn-login">
+                                    Submit
+                                </button>
+                            </footer>
+                        </form>
+                    </div>
                 </div>
-                <div className="form-group">
-                    <label>College:</label>
-                    <input
-                        type="text"
-                        name="college"
-                        id="college"
-                        value={this.state.details["college"]}
-                        class="form-control"
-                        placeholder="college name"
-                        onChange={this.handleDetailsChange}
-                        required
-                    />
-                </div>                
-                <button type="submit" className="btn btn-info">
-                    Submit
-        </button>
-            </form>
+            </div>
         );
     };
 
     initAll = () => {
         this.setState({
             redirect: true,
-        });
-        // const obj = { details: this.state.details, subjects: [] };
-        // docRef.set(obj);
-        // const upRef = docRef.collection("updates").doc("announcements");
-        // upRef.set({ announcements: [] });
-        // const lecRef = docRef.collection("lectures").doc("lecturesToday");
-        // lecRef.set({ lectures: [] });
-        // const fcmRef = docRef.collection("fcmTokens").doc("fcmTokens");
-        // fcmRef.set({ fcmTokens: [] });
+        });        
     };
 }
 

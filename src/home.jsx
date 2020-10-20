@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import "./assets/css/home.css";
+import "./assets/css/Login.css";
+import "./assets/css/mainPage.css";
 
 class Home extends Component {
   imageStyle = {

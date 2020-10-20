@@ -5,30 +5,30 @@ import MainPage from "./mainPage";
 const db = firebase.firestore();
 
 class StuLanding extends Component {
-  isMount=false;
+  isMount = false;
   state = {
     studentCode: "",
     rightCode: false,
   };
 
-  componentDidMount() {  
-    this.isMount = true;  
+  componentDidMount() {
+    this.isMount = true;
     var code;
-    if(this.isMount) {
-    if((code = this.props.match.params.code)){
-      this.setState({
-      studentCode: code,      
-      rightCode: true,
-    })
-    localStorage.setItem("studentCode", code);
-    };
-    if (localStorage.getItem("studentCode")) {      
-      this.setState({
-        studentCode: localStorage.getItem("studentCode"),
-        rightCode: true,
-      });
+    if (this.isMount) {
+      if ((code = this.props.match.params.code)) {
+        this.setState({
+          studentCode: code,
+          rightCode: true,
+        })
+        localStorage.setItem("studentCode", code);
+      };
+      if (localStorage.getItem("studentCode")) {
+        this.setState({
+          studentCode: localStorage.getItem("studentCode"),
+          rightCode: true,
+        });
+      }
     }
-  }
   }
 
   componentWillMount() {
@@ -49,7 +49,7 @@ class StuLanding extends Component {
     if (code === "") {
       alert("Please enter the code!");
     } else {
-      const docRef = db.collection("classes").doc(code);      
+      const docRef = db.collection("classes").doc(code);
       docRef
         .get()
         .then((doc) => {
@@ -74,7 +74,9 @@ class StuLanding extends Component {
 
   getPageData = () => {
     if (!this.state.rightCode) {
-      return <div>{this.getCodeForm()}</div>;
+      return (
+        this.getCodeForm()
+      );
     } else {
       return <MainPage studentCode={this.state.studentCode} />;
     }
@@ -82,24 +84,33 @@ class StuLanding extends Component {
 
   getCodeForm = () => {
     return (
-      <div className="row">
-        <form className="container" onSubmit={this.handleSubmit}>
-          <h1 className="m-4">Enter the code:</h1>
-          <div className="form-group mx-sm-3 mb-2">
-            <input
-              type="password"
-              className="form-control col-md-6 col-sm-10"
-              placeholder="Code provided by your CR!"
-              name="studentCode"
-              value={this.state.studentCode}
-              onChange={this.handleChange}
-              style={{ margin: "0 auto" }}
-            />
+      <div className="main-container">
+        <div className="container-login mx-auto">
+          <div className="con-login">
+            <h1>Log In</h1>
+            <form onSubmit={this.handleSubmit} style={{ width: "100%" }}>
+              <div className="con-inputs mt-4">
+                <div className="con-input">
+                  <label htmlFor="code">
+                    Class Code
+                        </label>
+                  <input
+                    placeholder="Code provided by CR"
+                    id="code"
+                    name="studentCode"
+                    type="password"
+                    onChange={this.handleChange}
+                  />
+                </div>
+              </div>
+              <footer>
+                <button type="submit" className="btn-login">
+                  Log In
+                </button>
+              </footer>
+            </form>
           </div>
-          <button type="submit" className="btn btn-success ">
-            Enter
-          </button>
-        </form>
+        </div>
       </div>
     );
   };
