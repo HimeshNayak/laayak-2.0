@@ -16,8 +16,8 @@ class Details extends Component {
     return (
 
       <>
-        <div className="ann-preview" style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-          <h3><span role="img" className="emoji" aria-label="announcement">🎓</span></h3>
+        <div className="ann-preview" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <img alt="details" src="https://cdn1.iconfinder.com/data/icons/education-set-01/512/document-info-512.png" />
         </div>
         <div className="ann-info text-left">
           <p>

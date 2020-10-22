@@ -220,6 +220,14 @@ p {
   width: 40%;
 }
 
+.ann-preview img {
+  width: 100px;
+}
+
+.dark .ann-preview img {
+  filter: invert(90%);
+}
+
 .lec-info, .ann-info{
 	padding: 20px;
 	position: relative;
@@ -329,6 +337,9 @@ p {
   }
   .lec-preview {
     padding: 30px 15px 30px 15px;
+  }
+  .ann-preview img {
+    width: 55px;
   }
   .ann-info {
     padding: 20px 10px 20px 10px;

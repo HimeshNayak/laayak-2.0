@@ -13,6 +13,9 @@ import Landing from "./Teacher/Landing";
 import NewTeacher from "./Teacher/NewTeacher";
 import ClassDetails from "./Teacher/ClassDetails";
 import classDetails from "./CrComponents/ClassDetails";
+import TeacherLogin from "./Teacher/TeacherLogin";
+import CrLogin from "./CrComponents/crLogin";
+import NotFound from "./NotFound/NotFound";
 
 function App() {
   document.getElementsByTagName("body")[0].classList.add(localStorage.getItem("mode"));
@@ -26,12 +29,15 @@ function App() {
           <Route path="/newcr" exact component={NewCr} />
           <Route path="/newcr/details" exact component={CrDetails} />
           <Route path="/cr" exact component={CrLanding} />
+          <Route path="/cr/login" exact component={CrLogin} />
           <Route path="/cr/class" exact component={classDetails} />
           <Route path="/teacher" exact component={Landing} />
+          <Route path="/teacher/login" exact component={TeacherLogin} />
           <Route path="/teacher/class" exact component={ClassDetails} />
           <Route path="/newteacher" exact component={NewTeacher} />
           <Route path="/newteacher/details" exact component={TeacherDetails} />
           <Route path="/about" exact component={About} />
+          <Route path="/" component={NotFound} />                  
         </Switch>
       </Router>
     </div>

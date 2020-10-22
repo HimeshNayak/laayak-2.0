@@ -1,0 +1,22 @@
+.four_zero_three_bg {
+    background-image: url(../assets/image/4031.gif);
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 300px;
+    background-position: center;
+}
+ 
+.page_403 h1 {
+    font-size: 80px;
+    margin-bottom: -30px;
+}
+.home {
+    font-size: 50px;
+    color: #000
+}
+.contant_box_403 {
+    margin-top: 10px;
+}
+.contant_box_403 .btn{
+    border-radius: 18px;
+}

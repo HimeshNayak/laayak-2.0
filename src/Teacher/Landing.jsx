@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import MainPage from "./MainPage";
-import TeacherLogin from "./TeacherLogin";
 import firebase from "../firebase";
 import Loader from "../Loader/Loader";
+import { Redirect } from "react-router-dom";
+import Forbidden from "../forbidden/Forbidden";
 
 const db = firebase.firestore();
 
@@ -19,10 +20,11 @@ class Landing extends Component {
             if (user) {
                 const docRef = db.collection("teachers").doc(user.email);
                 docRef.get().then((doc) => {
-                    if (this.isMount) {
-                        this.setState({
-                            doc: doc,
-                        });
+                    if (doc.data()) {
+                        (this.isMount) &&
+                            this.setState({
+                                doc: doc,
+                            });
                     }
                 });
             }
@@ -40,13 +42,19 @@ class Landing extends Component {
         this.isMount = false
     }
 
-    render() {        
+    render() {
         let display;
         (this.state.loading) && (display = <Loader />)
         if (!this.state.loading) {
-            this.state.user && this.state.doc ?
-                display = <MainPage /> :
-                display = <TeacherLogin />
+            if (this.state.user) {
+                if (this.state.doc) {
+                    display = <MainPage />
+                } else {
+                    display = <Forbidden />
+                }
+            } else {
+                return <Redirect to="/teacher/login" />
+            }
         }
         setTimeout(() => {
             if (this.isMount) {

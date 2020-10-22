@@ -28,6 +28,7 @@ class CrLogin extends Component {
         firebase.auth().signInWithEmailAndPassword(email, pass)
           .then(() => {
             alert("logged in successfully");
+            window.location.pathname = "/cr"
           })
           .catch((err) => {
             if (err.message === "The password is invalid or the user does not have a password.") {
@@ -35,7 +36,7 @@ class CrLogin extends Component {
               document.getElementById("password").classList.add("wrong-pass");
               setTimeout(() => {
                 document.getElementById("password").classList.remove("wrong-pass");
-              }, 10000)
+              }, 3000)
             }
             // alert(err.message);
           });

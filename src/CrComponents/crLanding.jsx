@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import firebase from "../firebase";
+import Forbidden from "../forbidden/Forbidden";
 import Loader from "../Loader/Loader";
-import CrLogin from "./crLogin";
 import MainPage from "./mainPage";
 
 const db = firebase.firestore();
@@ -48,9 +49,13 @@ class CrLanding extends Component {
     let display;
     (this.state.loading) && (display = <Loader />)
     if (!this.state.loading) {
-      this.state.user && this.state.doc ?
-        display = <MainPage CrCode={this.state.doc} /> :
-        display = <CrLogin />
+      if (this.state.user) {
+        this.state.doc ?
+          display = <MainPage CrCode={this.state.doc} /> :
+          display = <Forbidden />
+      } else {
+        return <Redirect to="/cr/login" />
+      }
     }
     setTimeout(() => {
       if (this.isMount) {

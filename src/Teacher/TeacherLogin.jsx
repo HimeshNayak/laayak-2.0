@@ -27,6 +27,7 @@ class TeacherLogin extends Component {
         firebase.auth().signInWithEmailAndPassword(email, pass)
           .then(() => {
             alert("logged in successfully");
+            window.location.pathname = "/teacher"
           })
           .catch((err) => {
             alert(err.message);

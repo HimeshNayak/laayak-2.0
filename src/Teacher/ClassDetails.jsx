@@ -20,7 +20,7 @@ class classDetails extends Component {
   };
 
   collRef = db.collection("classes");
-  docRef = this.collRef.doc(this.state.classId);;
+  docRef = this.collRef.doc(this.state.classId);
   collRefUp = this.docRef.collection("updates");
   docRefUp = this.collRefUp.doc("announcements");
 
@@ -61,8 +61,8 @@ class classDetails extends Component {
           <h1 className="mainPageHeading" style={{ marginTop: "-3vh" }}>
             Class Details
           </h1>
-          <Link className="btn btn-info mr-2 ml-n5" to="/teacher">
-            Home
+          <Link className="float-md-right mb-2 mr-2" to="/teacher">
+            <i className="fa fa-home" style={{ fontSize: "30px", color: "#000" }}></i>
           </Link>
         </div>
         {/* semester details */}
@@ -100,11 +100,11 @@ class classDetails extends Component {
         </div>
         <div className="m-4 mx-n3 ann-container">
           {this.state.announcements.map((announcement) => (
-              <Announcement
+            <Announcement
               key={announcement.dateAndTime}
-                announcement={announcement}
-                onDelete={this.deleteAnnouncement}
-              />
+              announcement={announcement}
+              onDelete={this.deleteAnnouncement}
+            />
           ))}
         </div>
         <BottomNav
