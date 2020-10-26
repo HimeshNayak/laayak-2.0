@@ -8,6 +8,7 @@ import AddAnnouncement from "./addAnnouncement";
 import AddPoll from "./addPoll";
 import AddLink from "./addLink";
 import firebase from "../firebase";
+import StuList from "./StuList";
 import BottomNav from "../BottomNav/bnav";
 import Loader from "../Loader/Loader";
 import DarkToggle from "../DarkToggle/DarkToggle";
@@ -26,7 +27,7 @@ class MainPage extends Component {
     announcements: [],
     user: firebase.auth().currentUser,
     crCode: this.props.CrCode,
-    loading: true
+    loading: true,
   };
 
   collRef = db.collection("classes");
@@ -51,17 +52,17 @@ class MainPage extends Component {
 
   // extracting data from db
   componentDidMount() {
-      this.docRef.onSnapshot((doc) => {
-        if (doc.data()) {
-          this.setState({
-            subjects: doc.data().subjects.map((subject) => {
-              return { ...subject };
-            }),
-            details: doc.data().details,
-            loading: false
-          });
-        }
-      });
+    this.docRef.onSnapshot((doc) => {
+      if (doc.data()) {
+        this.setState({
+          subjects: doc.data().subjects.map((subject) => {
+            return { ...subject };
+          }),
+          details: doc.data().details,
+          loading: false,
+        });
+      }
+    });
     this.docRefLec.onSnapshot((doc) => {
       if (doc.data()) {
         this.setState({
@@ -95,7 +96,9 @@ class MainPage extends Component {
   };
 
   render() {
-    const display = this.state.loading ? <Loader /> : (
+    const display = this.state.loading ? (
+      <Loader />
+    ) : (
       <div className="container-fluid">
         <div className="code-head-btn">
           <DarkToggle />
@@ -104,24 +107,34 @@ class MainPage extends Component {
           </h1>
           <Dropdown className="float-md-right mb-2">
             <Dropdown.Toggle className="acc-dropdown" id="dropdown-basic">
-              <i className="fa fa-user-circle" style={{ fontSize: "30px", cursor: "pointer" }} />
+              <i
+                className="fa fa-user-circle"
+                style={{ fontSize: "30px", cursor: "pointer" }}
+              />
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
               <Dropdown.Item> {this.state.details.crName} </Dropdown.Item>
-              <Dropdown.Item onClick={this.copyLink}> {this.state.crCode} </Dropdown.Item>
-              <Link to={{
-                pathname: "/cr/class",
-                state: {
-                  classId: this.state.crCode,
-                  details: this.state.details
-                }
-              }}
-                style={{ textDecoration: "none" }}><Dropdown.Item href="/cr/class">Class Details</Dropdown.Item></Link>
+              <Dropdown.Item onClick={this.copyLink}>
+                {" "}
+                {this.state.crCode}{" "}
+              </Dropdown.Item>
+              <Link
+                to={{
+                  pathname: "/cr/class",
+                  state: {
+                    classId: this.state.crCode,
+                    details: this.state.details,
+                  },
+                }}
+                style={{ textDecoration: "none" }}
+              >
+                <Dropdown.Item href="/cr/class">Class Details</Dropdown.Item>
+              </Link>
               <Dropdown.Divider />
               <Dropdown.Item onClick={() => this.handleSignOut()}>
                 <i
-                  style={{ fontSize: "25px", cursor: "pointer" }}                  
+                  style={{ fontSize: "25px", cursor: "pointer" }}
                   className="fa fa-sign-out"
                 />
               </Dropdown.Item>
@@ -149,7 +162,12 @@ class MainPage extends Component {
         {/* Announcement/polls/links */}
         <div id="Announcements">
           <div className="d-inline container-fluid">
-            <h2 className="subHeading">Mitron! Announcement Suno <span role="img" aria-label="announcement">📢</span></h2>
+            <h2 className="subHeading">
+              Mitron! Announcement Suno{" "}
+              <span role="img" aria-label="announcement">
+                📢
+              </span>
+            </h2>
             <hr className="mb-4" style={{ margin: "0 auto", width: "40%" }} />
           </div>
 
@@ -161,16 +179,33 @@ class MainPage extends Component {
 
           <div className="key-container">
             <div className="poll-card m-2" style={{ width: "90px" }}>
-              <span className="p-2"><i className="fa fa-bookmark text-danger mr-1" /> Official</span>
+              <span className="p-2">
+                <i className="fa fa-bookmark text-danger mr-1" /> Official
+              </span>
             </div>
             <div className="poll-card m-2" style={{ width: "150px" }}>
-              <span className="p-2"><span role="img" className="mr-1" aria-label="announcement">📢  </span> Announcements</span>
+              <span className="p-2">
+                <span role="img" className="mr-1" aria-label="announcement">
+                  📢{" "}
+                </span>{" "}
+                Announcements
+              </span>
             </div>
             <div className="poll-card m-2" style={{ width: "75px" }}>
-              <span className="p-2"><span role="img" className="mr-1" aria-label="announcement">🔗</span>Links</span>
+              <span className="p-2">
+                <span role="img" className="mr-1" aria-label="announcement">
+                  🔗
+                </span>
+                Links
+              </span>
             </div>
             <div className="poll-card m-2" style={{ width: "75px" }}>
-              <span className="p-2"><span role="img" className="mr-1" aria-label="announcement">🗳️</span>Polls</span>
+              <span className="p-2">
+                <span role="img" className="mr-1" aria-label="announcement">
+                  🗳️
+                </span>
+                Polls
+              </span>
             </div>
           </div>
         </div>
@@ -190,9 +225,7 @@ class MainPage extends Component {
         </div>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
         {/* button to add a new subject */}
-        <AddSubject
-          addSubject={this.addSubject}
-        />
+        <AddSubject addSubject={this.addSubject} />
         <div className="my-flex-container">
           {this.state.subjects.map((subject) => (
             <Subject
@@ -201,13 +234,14 @@ class MainPage extends Component {
               onDelete={this.deleteSubject}
             />
           ))}
-        </div>        
-        <BottomNav
-          paths={["Lectures", "Announcements", "Subjects"]}
-        />
-      </div>
+        </div>
 
-    )
+        {/* Students list */}
+        <StuList code={this.state.crCode} />
+
+        <BottomNav paths={["Lectures", "Announcements", "Subjects"]} />
+      </div>
+    );
     return display;
   }
   // Sort Announcements
@@ -230,35 +264,45 @@ class MainPage extends Component {
   // All add functions
   addSubject = (addSubject) => {
     const classId = this.state.crCode;
-    const teachClassRef = db.collection("teachers").doc(addSubject.teacherId).collection("classes").doc(classId);
+    const teachClassRef = db
+      .collection("teachers")
+      .doc(addSubject.teacherId)
+      .collection("classes")
+      .doc(classId);
     const teachClass = {
       details: {
         course: this.state.details.course,
         branch: this.state.details.branch,
         sem: this.state.details.sem,
         crName: this.state.details.crName,
-        classId: classId
+        classId: classId,
       },
-      subjects: [{
-        name: addSubject.subject,
-        code: addSubject.subjectCode
-      }]
-    }
+      subjects: [
+        {
+          name: addSubject.subject,
+          code: addSubject.subjectCode,
+        },
+      ],
+    };
     const { subject, subjectCode, teacher, teacherId } = addSubject;
-    const newSubject = { subject, subjectCode, teacher, teacherId }
+    const newSubject = { subject, subjectCode, teacher, teacherId };
     this.docRef.update({
-      subjects: firebase.firestore.FieldValue.arrayUnion(newSubject)
+      subjects: firebase.firestore.FieldValue.arrayUnion(newSubject),
     });
 
     db.runTransaction((trans) => {
       return trans.get(teachClassRef).then((doc) => {
         if (doc.exists) {
-          trans.update(teachClassRef, { subjects: firebase.firestore.FieldValue.arrayUnion(teachClass.subjects[0]) });
+          trans.update(teachClassRef, {
+            subjects: firebase.firestore.FieldValue.arrayUnion(
+              teachClass.subjects[0]
+            ),
+          });
         } else {
-          teachClassRef.set(teachClass)
+          teachClassRef.set(teachClass);
         }
-      })
-    })
+      });
+    });
   };
 
   addLecture = (newLecture) => {
@@ -276,7 +320,7 @@ class MainPage extends Component {
   };
 
   // All update/edit functions
-  handleDetailsEdit = () => { };
+  handleDetailsEdit = () => {};
 
   // All delete functions
   deleteAnnouncement = (dateAndTime) => {
@@ -288,28 +332,36 @@ class MainPage extends Component {
   };
 
   deleteSubject = (subject) => {
-    const teachClassRef = db.collection("teachers").doc(subject.teacherId).collection("classes").doc(this.state.crCode);
+    const teachClassRef = db
+      .collection("teachers")
+      .doc(subject.teacherId)
+      .collection("classes")
+      .doc(this.state.crCode);
     this.docRef.update({
-      subjects: this.state.subjects.filter((s) => s.subjectCode !== subject.subjectCode),
+      subjects: this.state.subjects.filter(
+        (s) => s.subjectCode !== subject.subjectCode
+      ),
     });
     const remSub = {
       code: subject.subjectCode,
-      name: subject.subject
-    }
+      name: subject.subject,
+    };
     db.runTransaction((trans) => {
       return trans.get(teachClassRef).then((doc) => {
         if (doc.data().subjects.length === 1) {
           trans.delete(teachClassRef);
         } else {
-          trans.update(teachClassRef, { subjects: firebase.firestore.FieldValue.arrayRemove(remSub) });
+          trans.update(teachClassRef, {
+            subjects: firebase.firestore.FieldValue.arrayRemove(remSub),
+          });
         }
-      })
-    })
+      });
+    });
   };
 
   deleteLecture = (lecture) => {
     this.docRefLec.update({
-      lectures: firebase.firestore.FieldValue.arrayRemove(lecture)
+      lectures: firebase.firestore.FieldValue.arrayRemove(lecture),
     });
   };
 }
