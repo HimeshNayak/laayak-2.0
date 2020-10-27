@@ -59,7 +59,7 @@ class NewCr extends Component {
           this.setState({ authStatus: true });
         })
         .catch((err) => {
-          alert(err);
+          alert(err.message);
         });
     }
   };
@@ -78,9 +78,7 @@ class NewCr extends Component {
     return this.state.authStatus ? (
       <Redirect to="/newcr/details" />
     ) : (
-      <div>
-        {this.getForm()}
-      </div>
+      <div>{this.getForm()}</div>
     );
   }
 
@@ -93,9 +91,7 @@ class NewCr extends Component {
             <form onSubmit={this.handleSignUp} style={{ width: "100%" }}>
               <div className="con-inputs mt-4">
                 <div className="con-input">
-                  <label htmlFor="email">
-                    Email
-                        </label>
+                  <label htmlFor="email">Email</label>
                   <input
                     placeholder="email@example.com"
                     id="email"
@@ -107,9 +103,7 @@ class NewCr extends Component {
                   />
                 </div>
                 <div className="con-input">
-                  <label htmlFor="password">
-                    Password
-                        </label>
+                  <label htmlFor="password">Password</label>
                   <input
                     placeholder="Password"
                     id="password"

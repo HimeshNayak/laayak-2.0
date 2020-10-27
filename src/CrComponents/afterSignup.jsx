@@ -102,11 +102,7 @@ class AfterSignup extends Component {
     if (this.state.redirect) {
       return <Redirect to="/cr" />;
     } else {
-      return (
-        <div>
-          {this.getDetails()}
-        </div>
-      );
+      return <div>{this.getDetails()}</div>;
     }
   }
 
@@ -124,9 +120,7 @@ class AfterSignup extends Component {
             <form onSubmit={this.handleSubmitDetails} style={{ width: "100%" }}>
               <div className="con-inputs mt-4">
                 <div className="con-input">
-                  <label htmlFor="crName">
-                    Username
-                  </label>
+                  <label htmlFor="crName">Username</label>
                   <input
                     placeholder="Username"
                     id="crName"
@@ -138,9 +132,7 @@ class AfterSignup extends Component {
                   />
                 </div>
                 <div className="con-input">
-                  <label htmlFor="course">
-                    Course
-                  </label>
+                  <label htmlFor="course">Course</label>
                   <input
                     placeholder="Eg. BTech"
                     id="course"
@@ -152,9 +144,7 @@ class AfterSignup extends Component {
                   />
                 </div>
                 <div className="con-input">
-                  <label htmlFor="branch">
-                    Branch
-                  </label>
+                  <label htmlFor="branch">Branch</label>
                   <input
                     placeholder="Eg. CSE"
                     id="branch"
@@ -166,9 +156,7 @@ class AfterSignup extends Component {
                   />
                 </div>
                 <div className="con-input">
-                  <label htmlFor="sem">
-                    Semester
-                  </label>
+                  <label htmlFor="sem">Semester</label>
                   <input
                     placeholder="Semester"
                     id="sem"
@@ -180,9 +168,7 @@ class AfterSignup extends Component {
                   />
                 </div>
                 <div className="con-input">
-                  <label htmlFor="college">
-                    College Name
-                  </label>
+                  <label htmlFor="college">College Name</label>
                   <input
                     placeholder="College Name"
                     id="college"
@@ -219,6 +205,8 @@ class AfterSignup extends Component {
     lecRef.set({ lectures: [] });
     const fcmRef = docRef.collection("fcmTokens").doc("fcmTokens");
     fcmRef.set({ fcmTokens: [] });
+    const detailsRef = docRef.collection("details").doc("stuList");
+    detailsRef.set({ studentsList: [] });
   };
 }
 
