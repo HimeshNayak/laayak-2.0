@@ -1,119 +1,67 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import firebase from "../firebase";
+import Forbidden from "../forbidden/Forbidden";
+import Loader from "../Loader/Loader";
 import MainPage from "./mainPage";
 
-const db = firebase.firestore();
-
 class StuLanding extends Component {
+  db = firebase.firestore();
   isMount = false;
   state = {
-    studentCode: "",
-    rightCode: false,
+    email: "",
+    access: false,
+    loading: true
   };
 
   componentDidMount() {
     this.isMount = true;
-    var code;
-    if (this.isMount) {
-      if ((code = this.props.match.params.code)) {
-        this.setState({
-          studentCode: code,
-          rightCode: true,
-        })
-        localStorage.setItem("studentCode", code);
-      };
-      if (localStorage.getItem("studentCode")) {
-        this.setState({
-          studentCode: localStorage.getItem("studentCode"),
-          rightCode: true,
-        });
-      }
-    }
+    this.checkAuth();
   }
 
   componentWillMount() {
     this.isMount = false;
   }
 
-  handleChange = (e) => {
-    const nam = e.target.name,
-      val = e.target.value;
-    this.setState({
-      [nam]: val,
-    });
-  };
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const code = this.state.studentCode;
-    if (code === "") {
-      alert("Please enter the code!");
-    } else {
-      const docRef = db.collection("classes").doc(code);
-      docRef
-        .get()
-        .then((doc) => {
-          if (doc.exists) {
-            this.setState({ rightCode: true });
-            localStorage.setItem("studentCode", this.state.studentCode);
-          } else {
-            this.setState({ rightCode: false });
-            alert("Wrong code entered, try again");
+  checkAuth() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        if (this.isMount) {
+          this.setState({ email: user.email })
+        }
+        this.db.collection("students").doc(user.email).get().then((doc) => {
+          if (doc.exists) {            
+            if(this.isMount){
+            this.setState({
+              access: true
+            })
+          }
           }
         })
-        .catch(() => {
-          this.setState({ rightCode: false });
-          alert("Wrong code entered, try again");
-        });
-    }
-  };
-
-  render() {
-    return <div>{this.getPageData()}</div>;
+      }
+    });
+    setTimeout(() => {
+      this.setState({ loading: false })
+    }, 1000)
   }
 
-  getPageData = () => {
-    if (!this.state.rightCode) {
-      return (
-        this.getCodeForm()
-      );
-    } else {
-      return <MainPage studentCode={this.state.studentCode} />;
-    }
-  };
 
-  getCodeForm = () => {
-    return (
-      <div className="main-container">
-        <div className="container-login mx-auto">
-          <div className="con-login">
-            <h1>Log In</h1>
-            <form onSubmit={this.handleSubmit} style={{ width: "100%" }}>
-              <div className="con-inputs mt-4">
-                <div className="con-input">
-                  <label htmlFor="code">
-                    Class Code
-                        </label>
-                  <input
-                    placeholder="Code provided by CR"
-                    id="code"
-                    name="studentCode"
-                    type="password"
-                    onChange={this.handleChange}
-                  />
-                </div>
-              </div>
-              <footer>
-                <button type="submit" className="btn-login">
-                  Log In
-                </button>
-              </footer>
-            </form>
-          </div>
-        </div>
-      </div>
-    );
-  };
+  render() {
+
+    var display;
+    if (this.state.email) {
+      this.state.access ?
+        display = <MainPage email={this.state.email} /> :
+        display = <Forbidden />
+    } else {
+      display = <Redirect to="/student/login" />
+    }
+    if (this.state.loading) {
+      return <Loader />
+    } else {
+      return display
+    }
+  }
 }
 
 export default StuLanding;

@@ -104,3 +104,22 @@
 		border-radius: 0;
 	}
 }
+
+.toast {
+	position: absolute;
+	top: 80px !important;
+    right: 20px !important;
+    left: auto !important;	
+	padding: 5px 20px;
+	height: max-content;
+	width: max-content;
+	color: white;
+}
+
+.error-toast {
+	background-color: #c62828;
+}
+
+.success-toast {
+	background-color: #43a047;	
+}

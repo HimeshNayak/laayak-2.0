@@ -343,12 +343,13 @@ class MainPage extends Component {
     };
     db.runTransaction((trans) => {
       return trans.get(teachClassRef).then((doc) => {
+        if (doc.data().subjects){
         if (doc.data().subjects.length === 1) {
           trans.delete(teachClassRef);
         } else {
           trans.update(teachClassRef, {
             subjects: firebase.firestore.FieldValue.arrayRemove(remSub),
-          });
+          });}
         }
       });
     });

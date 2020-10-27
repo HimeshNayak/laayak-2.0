@@ -22,16 +22,16 @@ function PrintStu({ student, style, stuList, code }) {
       .catch((err) => alert(err.message));
 
     // deleting document created
-    const docRef2 = db.collection("students").doc(student.email);
+    // const docRef2 = db.collection("students").doc(student.email);
 
-    docRef2
-      .delete()
-      .then(() => {
-        alert("student document deleted");
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
+    // docRef2
+    //   .delete()
+    //   .then(() => {
+    //     alert("student document deleted");
+    //   })
+    //   .catch((err) => {
+    //     alert(err.message);
+    //   });
 
     // removing user authentication
     // ...

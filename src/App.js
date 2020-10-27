@@ -18,6 +18,7 @@ import TeacherLogin from "./Teacher/TeacherLogin";
 import CrLogin from "./CrComponents/crLogin";
 import NotFound from "./NotFound/NotFound";
 import StuLogin from "./StuComponents/StuLogin";
+import Profile from "./StuComponents/profile/Profile";
 
 function App() {
   document.getElementsByTagName("body")[0].classList.add(localStorage.getItem("mode"));
@@ -27,9 +28,10 @@ function App() {
         <MainNavBar />
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/student/:code?" exact component={StuLanding} />
+          <Route path="/student" exact component={StuLanding} />
           <Route path="/student/login" exact component={StuLogin} />
-          <Route path="/newstu" exact component={StuSignup} />
+          <Route path="/student/signup" exact component={StuSignup} />
+          <Route path="/student/profile" exact component={Profile} />
           <Route path="/newcr" exact component={NewCr} />
           <Route path="/newcr/details" exact component={CrDetails} />
           <Route path="/cr" exact component={CrLanding} />
