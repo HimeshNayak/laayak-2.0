@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./home";
 import StuLanding from "./StuComponents/stuLanding";
-import StuSignup from './StuComponents/StuSignup/StuSignup';
+import StuSignup from './StuComponents/StuSignup';
 import CrLanding from "./CrComponents/crLanding";
 import About from "./about";
 import MainNavBar from "./NavBar/mainNavBar";
@@ -17,6 +17,7 @@ import classDetails from "./CrComponents/ClassDetails";
 import TeacherLogin from "./Teacher/TeacherLogin";
 import CrLogin from "./CrComponents/crLogin";
 import NotFound from "./NotFound/NotFound";
+import StuLogin from "./StuComponents/StuLogin";
 
 function App() {
   document.getElementsByTagName("body")[0].classList.add(localStorage.getItem("mode"));
@@ -27,6 +28,7 @@ function App() {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/student/:code?" exact component={StuLanding} />
+          <Route path="/student/login" exact component={StuLogin} />
           <Route path="/newstu" exact component={StuSignup} />
           <Route path="/newcr" exact component={NewCr} />
           <Route path="/newcr/details" exact component={CrDetails} />

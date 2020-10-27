@@ -3,8 +3,8 @@ import Details from "../CrComponents/details";
 import firebase from "../firebase";
 import { Link } from 'react-router-dom';
 import BottomNav from '../BottomNav/bnav';
-import Students from './Students';
 import DarkToggle from '../DarkToggle/DarkToggle';
+import StuList from './StuList';
 let db = firebase.firestore();
 
 
@@ -44,8 +44,7 @@ class classDetails extends Component {
         {/* students details */}
         <h2 id="Students" className="subHeading">Students: </h2>
         <hr className="mb-4" style={{ margin: "0 auto", width: "18rem" }} />
-
-        <Students />
+        <StuList code={this.state.classId} />
         <BottomNav
           paths={["Details", "Students"]}
         />

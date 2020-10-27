@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import firebase from "../firebase";
-import StuList from "./StuList";
 
 const db = firebase.firestore();
 
@@ -39,13 +38,11 @@ function PrintStu({ student, style, stuList, code }) {
   };
 
   return (
-    <tr style={style}>
-      <td style={style}>{student.rollNo}</td>
-      <td style={style}>{student.name}</td>
-      <td style={style}>{student.email}</td>
-      <td style={{ ...style, cursor: "pointer" }} onClick={handleKick}>
-        ❌
-      </td>
+    <tr>
+      <td>{student.rollNo}</td>
+      <td>{student.name}</td>
+      <td>{student.email}</td>
+      <td><img onClick={handleKick} width="20px" style={{ cursor: "pointer" }} src="https://cdn4.iconfinder.com/data/icons/web-basics-vol-05/512/user_human_person_avatar_minus_close_delete-512.png" alt="kick" /></td>
     </tr>
   );
 }

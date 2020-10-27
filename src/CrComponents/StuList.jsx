@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PrintStu from "./PrintStu";
 import firebase from "../firebase";
+import { Table } from "react-bootstrap";
 
 const db = firebase.firestore();
 
@@ -18,24 +19,18 @@ function StuList({ code }) {
     docRef.onSnapshot((snap) => {
       setStu([...snap.data().studentsList]);
     });
-  }, []);
-
-  const printList = () => {
-    stu.map((student) => {
-      return <PrintStu student={student} />;
-    });
-  };
+  },);
 
   return (
     <div>
       <h1> this is the students list component</h1>
-      <table style={style}>
+      <Table striped bordered responsive className="mx-auto" style={{ maxWidth: "600px" }}>
         <thead>
-          <tr style={style}>
-            <th style={style}>Roll Number</th>
-            <th style={style}>Name</th>
-            <th style={style}>Email</th>
-            <th style={style}>Kick</th>
+          <tr>
+            <th>Roll No.</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Kick</th>
           </tr>
         </thead>
         <tbody>
@@ -47,9 +42,9 @@ function StuList({ code }) {
               stuList={stu}
               code={code}
             />
-          ))}
+          ))}          
         </tbody>
-      </table>
+      </Table>
     </div>
   );
 }

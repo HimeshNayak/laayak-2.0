@@ -8,7 +8,6 @@ import AddAnnouncement from "./addAnnouncement";
 import AddPoll from "./addPoll";
 import AddLink from "./addLink";
 import firebase from "../firebase";
-import StuList from "./StuList";
 import BottomNav from "../BottomNav/bnav";
 import Loader from "../Loader/Loader";
 import DarkToggle from "../DarkToggle/DarkToggle";
@@ -234,11 +233,7 @@ class MainPage extends Component {
               onDelete={this.deleteSubject}
             />
           ))}
-        </div>
-
-        {/* Students list */}
-        <StuList code={this.state.crCode} />
-
+        </div>        
         <BottomNav paths={["Lectures", "Announcements", "Subjects"]} />
       </div>
     );
